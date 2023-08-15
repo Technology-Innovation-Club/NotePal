@@ -1,0 +1,7 @@
+
+# Ignore the venv directory, which is used to store Python virtual environments
+env/
+__pycache__/
+# Ignore the .env file, which contains environment variables
+.env
+db.sqlite3

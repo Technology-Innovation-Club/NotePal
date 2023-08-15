@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: ./Dockerfile_pg.dockerfile
+    restart: always
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: tic_user
+      POSTGRES_PASSWORD: tic_password
+      POSTGRES_DB: ticdb
+    volumes:
+      - tic-data:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/code
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    environment:
+      TIC_DB_NAME: ticdb
+      TIC_DB_USER: tic_user
+      TIC_DB_PASSWORD: tic_password
+      TIC_DB_HOST: db
+      TIC_DB_PORT: 5432
+      DEPLOYMENT_TIER: dev
+
+volumes:
+  tic-data:
