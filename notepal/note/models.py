@@ -16,3 +16,9 @@ class NoteFileembedding(models.Model):
     metadata = models.JSONField(null=True, blank=True)
     
 
+class NoteEmbedding(models.Model):
+    id = models.AutoField(primary_key=True)
+    created_ts = models.DateTimeField(auto_now_add=True)
+    text = models.TextField()
+    file_embedding = models.ForeignKey(NoteFileembedding, on_delete=models.PROTECT)
+    vector = VectorField(dimensions=1536, null=True)
