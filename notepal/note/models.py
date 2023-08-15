@@ -2,7 +2,7 @@ from django.db import models
 import uuid
 from pgvector.django import VectorField
 
-
+# Create note file embedding model
 class NoteFileembedding(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, editable=False, primary_key=True
@@ -14,7 +14,7 @@ class NoteFileembedding(models.Model):
     date_published = models.DateTimeField(null=True, blank=True)
     publisher = models.TextField(null=True, blank=True)
     metadata = models.JSONField(null=True, blank=True)
-    
+ 
 
 class NoteEmbedding(models.Model):
     id = models.AutoField(primary_key=True)
