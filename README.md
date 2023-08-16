@@ -28,7 +28,3 @@ You can access the Notepal application in your browser with
 ```bash
 127.0.0.1:9000
 ```
-To shutdown docker container
-```bash
-docker-compose down
-```
