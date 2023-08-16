@@ -8,6 +8,24 @@ import os
 import datetime
 
 
+def clean_and_convert_to_utf8(text):
+    # Remove any non-ASCII characters and unnecessary whitespaces
+    cleaned_text = ' '.join(text.split())
+    
+    # Convert the cleaned text to UTF-8 encoding
+    utf8_text = cleaned_text.encode('utf-8', 'ignore').decode('utf-8')
+    
+    return utf8_text
+
+# upload DOCX file
+def upload_docx_file(docx_file):
+    docx_reader = docx.Document(docx_file)
+    fullText = []
+    for para in docx_reader.paragraphs:
+            fullText.append(para.text)
+    doc_text = '\n'.join(fullText)
+    cleaned_text = clean_and_convert_to_utf8(doc_text)
+    return cleaned_text
 
 def pptx_handle_utf8(df_pptx_clean):
     for col in df_pptx_clean.columns:
@@ -58,3 +76,15 @@ def upload_pptx_file(pptx_file):
 
 
 # handle PDF file
+def upload_pdf_file(pdf_file):
+    pdf_reader = PdfReader(pdf_file)
+    render_page = pdf_reader.pages
+    len_reader = len(render_page)
+    pdf_text = ""
+    for i in range(len_reader):
+        page = pdf_reader.pages[i]
+        pdf_text += page.extract_text()
+    cleaned_text = clean_and_convert_to_utf8(pdf_text)
+    return cleaned_text
+
+
