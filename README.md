@@ -15,7 +15,7 @@ Before you begin, make sure you have the following installed on your system:
 
    ```bash
    git clone https://github.com/Technology-Innovation-Club/NotePal.git
-   cd notepal
+   cd NotePal/notepal
 2. **Run docker**
     ```bash
     docker-compose up
