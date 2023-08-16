@@ -88,3 +88,14 @@ def upload_pdf_file(pdf_file):
     return cleaned_text
 
 
+def handle_upload(file_path):
+    file_type = get_file_type(file_path)
+    if file_type == 'pdf':
+        text = upload_pdf_file(file_path)
+    elif file_type == 'docx':
+        text = upload_docx_file(file_path)
+    elif file_type == 'pptx':
+        text = upload_pptx_file(file_path)
+    else:
+        text = None
+    return text
