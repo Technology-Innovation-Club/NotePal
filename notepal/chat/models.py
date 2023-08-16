@@ -13,4 +13,3 @@ class History(models.Model):
     response_to_user = models.TextField()
     llm_algo_used = models.TextField()
     embedding_context = models.JSONField(null=True, blank=True)
-    metadata = models.JSONField(null=True, blank=True)
