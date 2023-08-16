@@ -88,6 +88,26 @@ def upload_pdf_file(pdf_file):
     return cleaned_text
 
 
+def get_file_type(file_path):
+    match = re.search(r"[^/\\]+$", file_path)
+    if match:
+        file_name_type = match.group(0)
+        file_type = file_name_type.split('.')[1]
+        return file_type
+    else:
+        return None
+
+def get_file_name(file_path):
+    match = re.search(r"[^/\\]+$", file_path)
+    if match:
+        file_name_type = match.group(0)
+        file_name = file_name_type.split('.')[0]
+        return file_name
+    else:
+        return None
+
+
+
 def handle_upload(file_path):
     file_type = get_file_type(file_path)
     if file_type == 'pdf':
@@ -99,3 +119,32 @@ def handle_upload(file_path):
     else:
         text = None
     return text
+
+# Getting the file information
+def get_file_current_date(file_path):
+    date_time_obj_created = datetime.datetime.fromtimestamp(os.path.getctime(file_path))
+    date_created = date_time_obj_created.strftime("%Y-%m-%d")
+    return date_created
+    
+def get_file_modified_date(file_path):
+    date_time_obj_modified = datetime.datetime.fromtimestamp(os.path.getmtime(file_path))
+    date_modified = date_time_obj_modified.strftime("%Y-%m-%d")
+    return date_modified
+    
+def get_metadata(file_path):
+    metadata = {}
+    metadata["file_name"] = get_file_name(file_path)
+    metadata["file_size"] = os.path.getsize(file_path)
+    metadata["file_type"] = get_file_type(file_path)
+    metadata["date_created"] = get_file_current_date(file_path)
+    metadata["date_modified"] = get_file_modified_date(file_path)
+    return metadata
+
+# TEST
+# figure out how to use regex to fix this \ problem
+file_path = '/code/samples/CSC304-Week-9-Slides.pdf'
+
+
+
+
+print(handle_upload(file_path))
