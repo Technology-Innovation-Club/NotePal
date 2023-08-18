@@ -1,6 +1,7 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 # from load_file import 
 from note.models import NoteFileembedding
+from chat.models import NoteEmbedding
 from django.utils import timezone
 import io
 from numpy import ndarray
@@ -53,6 +54,24 @@ def store_file(file, filename, metadata):
     )
 
     return note_file
+
+def  store_file_embedding(file_embedding: NoteFileembedding):
+    text = read_file(file_embedding)
+    chunks = get_chunks(text)
+    for i in range(len(chunks)):
+        chunk = chunks[i].page_content
+        vector = get_vector(chunk)
+        NoteEmbedding.objects.create(
+            file_text=chunk, 
+            file_embedding=file_embedding, 
+            vector=vector, 
+            date_created=timezone.now(),
+        )
+
+
+
+
+
 
 
 
