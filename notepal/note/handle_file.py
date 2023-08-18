@@ -45,3 +45,36 @@ def get_pptx_text(prs):
     return pptx_cleaned_text
 
 
+# upload PDF file
+def upload_pdf_file(pdf_file):
+    pdf_reader = PdfReader(pdf_file)
+    return pdf_reader
+
+# get text from PDF file
+def get_pdf_text(pdf_reader):
+    render_page = pdf_reader.pages
+    len_reader = len(render_page)
+    pdf_text = ""
+    for i in range(len_reader):
+        page = pdf_reader.pages[i]
+        pdf_text += page.extract_text()
+    cleaned_text = clean_and_convert_to_utf8(pdf_text)
+    return cleaned_text
+
+
+
+    
+
+
+
+
+
+
+# TEST
+# figure out how to use regex to fix this \ problem
+# file_path = '/code/samples/CSC304-Week-9-Slides.pdf'
+
+
+
+
+# print(upload_pdf_file(file_path))
