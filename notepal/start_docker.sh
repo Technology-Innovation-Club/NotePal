@@ -1,5 +1,4 @@
 #!/bin/bash
-pip install --no-cache-dir -r requirements.txt
 python manage.py migrate
 
 if [ ! -f /.container_created ]; then
