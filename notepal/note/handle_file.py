@@ -6,6 +6,17 @@ import numpy as np
 import re
 
 
+def clean_and_convert_to_utf8(text):
+    # Remove any non-ASCII characters and unnecessary whitespaces
+    cleaned_text = ' '.join(text.split())
+    
+    # Convert the cleaned text to UTF-8 encoding
+    utf8_text = cleaned_text.encode('utf-8', 'ignore').decode('utf-8')
+    
+    return utf8_text
+
+
+
 # upload DOCX file
 def upload_docx_file(docx_file):
     docx_reader = docx.Document(docx_file)
