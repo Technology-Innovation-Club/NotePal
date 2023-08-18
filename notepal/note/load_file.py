@@ -1,4 +1,23 @@
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+# from load_file import 
+from django.utils import timezone
+import io
+from numpy import ndarray
 from .handle_file import upload_docx_file, upload_pdf_file, upload_pptx_file, get_docx_text, get_pptx_text, get_pdf_text
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+
+
+def get_chunks(text):
+    text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size = 100,
+    chunk_overlap  = 20,
+    length_function = len,
+    add_start_index = True,
+    )
+    split_texts = text_splitter.create_documents([text])
+    return split_texts
+
 def handle_upload(file, file_type):
     if file_type == 'pdf':
         pdf_reader = upload_pdf_file(file)
