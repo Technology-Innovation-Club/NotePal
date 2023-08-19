@@ -2,6 +2,7 @@ from ninja import NinjaAPI
 from note.api import note_router
 from chat.api import chat_router
 from users.api import notepal_router
+from chat.api import chat_router
 
 api = NinjaAPI()
 
