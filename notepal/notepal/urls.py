@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.decorators.csrf import get_token
 from .api import api
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),
     path("api/", api.urls),
     path("", include("chat.urls")),
+    path("dev/csrf-token/", get_token, name="api-csrf-token"),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
