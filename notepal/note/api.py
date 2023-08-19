@@ -39,3 +39,11 @@ def get_all(request, username='admin'):
     return output["files"]
 
 # remove a users specific file
+@note_router.delete("/remove")
+def remove(request, filename: str, username='admin'):
+    user = get_object_or_404(User, username=username)
+    note = get_object_or_404(NoteFileembedding, name=filename, owner=user)
+    note.delete()
+    return f"{filename} has been removed"
+    
+    
