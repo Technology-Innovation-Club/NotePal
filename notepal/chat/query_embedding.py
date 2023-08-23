@@ -1,33 +1,27 @@
 import openai
-import os
+# import os
 import tiktoken
 from pgvector.django import CosineDistance
 from note.load_file import get_vector
 from chat.models import NoteEmbedding
+from chat.quiz import quiz_notify
+import json
 
 # implement the quiz feature
 SYSTEM_CONTENT = """
 you are a students assistant. 
 Use the current reference document to improve the current response to the users question. The output should be a response that is easy for the student to understand. 
 The format of the response should be in markdown format when required to boost the students understanding of the response. The response should also be to the point and not contain unnecessary information.
+Ignore the context document and do not reference it in your response if it does not apply to the question.  
+ALWAYS use the functions to find a function to trigger quizzes when a user asks for a quiz, test, questions or any form test of knowledge in anyway manner it is asked.
 """
 
-QUIZ = """"
-When a user requests to be tested or quizzed, analyze both the question posed by the user. 
-Utilize this information to formulate appropriate questions for assessing the user's knowledge. 
-Determine the optimal number of questions to present and set the difficulty level of these questions based on the user's proficiency. 
-Additionally, choose the appropriate question format based on the content: for theoretical questions, 
-prompt the user to type out their answer, whereas for objective questions, provide multiple-choice options.
-The output of this process should be presented in JSON format, comprising the following elements:
-'question': The formulated question for the user.
-'type_of_question': This field indicates whether the question is theoretical ('theory') or objective ('objective').
-'options' (Only for objective questions): A list of multiple-choice options for the user to choose from.
-'the_answer' (Only for objective questions): The correct answer, which should match one of the provided options."""
 
 # openai.api_key_path='/code/.env'
 # config = dotenv.dotenv_values(".env")
 openai.api_key = "<your openai api key>"
 distance_limit = 5
+
 
 
 def num_tokens_from_messages(messages, model="gpt-3.5-turbo"):
@@ -58,14 +52,35 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo"):
     return num_tokens
 
 
+functions = [
+    {
+        "name": "quiz_notify",
+        "description": "Useful for outputting a quiz to the user.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "user_message":{
+                    "type": "string",
+                    "description": "The users question",
+                },
+                #remove these
+                "model":{"type": "string", "description": "The model to use"},
+                "temperature":{"type": "number", "description": "The temperature to use"},
+            },
+            "required": ["user_message"],
+        },
+    }
+]
 def get_completion_stuff(msgs, model="gpt-3.5-turbo", temperature=0.7):
     response = openai.ChatCompletion.create(
         model=model,
         messages=msgs,
         temperature=temperature,
+        functions=functions,
+        function_call="auto", # auto is default, but we'll be explicit
     )
-    # print(f"The number of items in messages: {len(msgs)}")
-    # print(f"The tokens: {num_tokens_from_messages(msgs)}")
+    print(f"The number of items in messages: {len(msgs)}")
+    print(f"The tokens: {num_tokens_from_messages(msgs)}")
     # print(f"The response is: {response}")
     return response
 
@@ -87,10 +102,11 @@ def ask_question_stuff(query):
         distance=CosineDistance("vector", query_vector)
     ).filter(distance__lt=0.5)[:3]
     texts = ""
-    update_db["embedding_text"] = [result.file_text for result in results]  
-    update_db["embedding_context"] = [
-        {"id": result.id, "text": result.file_text} for result in results
-    ]
+    embedding_text_temp = []
+    for result in results:
+        embedding_text_temp.append({"id": result.id, "text": result.file_text})
+    update_db["query_context"] = embedding_text_temp
+
     update_db["llm_algo_used"] = "gpt-3.5-turbo"
     for result in results:
         text = result.file_text + ".\n"
@@ -106,32 +122,45 @@ def ask_question_stuff(query):
     )
     context.append(
         {
-            "role": "system",
-            "content": f"Ignore the context document and do not reference it in your response if it does not apply to the question.",
-        }
-    )
-    context.append(
-        {
-          "role": "system",
-            "content": QUIZ, 
-        })
-    context.append(
-        {
             "role": "user",
             "content": f"Answer the question {query}",
         }
     )
     response = get_completion_stuff(context)
+    response_message = response["choices"][0]["message"]
+    if response_message.get("function_call"):
+        available_functions = {
+            "quiz_notify": quiz_notify,
+        }
+        function_name = response_message["function_call"]["name"]
+        function_to_call = available_functions[function_name]
+        function_args = json.loads(response_message["function_call"]["arguments"])
+        function_response = function_to_call(
+            user_message= function_args['user_message'],
+        )
+        # context.append(response_message)
+        context.append(
+            {
+                "role": "function",
+                "name": function_name,
+                "content": str(function_response),
+            }
+        )
+        # second_response = openai.ChatCompletion.create(
+        #     model="gpt-3.5-turbo",
+        #     messages=context,
+        # )
+        response = function_response
+        print(f"function response: {response.choices[0].message['content']}")
+        
     update_db["response"] = response.choices[0].message["content"]
     update_db["response_to_user"] = response.choices[0].message["content"]
-    context.append({"role": "assistant", "content": response})
+    context.append({"role": "assistant", "content": response.choices[0].message["content"]})
     # only set in multiples of 2
-    if len(context) > 6:
-        context.pop()
-        context.pop()
+    # if len(context) > 10:
+    #     context.pop()
+    #     context.pop()
     if num_tokens_from_messages(context) > 4000:
         context.pop()
         context.pop()
-    update_db["question_dict"] = context
-    # return response.choices[0].message["content"]
     return update_db
