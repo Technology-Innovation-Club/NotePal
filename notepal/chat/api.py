@@ -13,9 +13,9 @@ chat_router = Router()
 def query(request, query: str):
     user = get_object_or_404(User, username='admin')
     response = ask_question_stuff(query)
-    if len(response["embedding_text"]) > 0:
+    if len(response["query_context"]) > 0:
         user_question = response["user_question"]
-        embedding_context = response["embedding_context"]
+        embedding_context = response["query_context"]
         llm_algo_used = response["llm_algo_used"]
         response_to_user = response["response_to_user"]
         llm_response = response["response"]
