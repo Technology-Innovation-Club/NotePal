@@ -8,7 +8,9 @@ def signup(request):
 
 
 def login(request):
-    return render(request, "login.html")
+    title = "Sign in"
+    context = {'title': title}
+    return render(request, "login.html", context)
 
 
 def chat(request):
