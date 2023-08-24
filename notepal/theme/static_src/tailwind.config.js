@@ -6,6 +6,7 @@
  */
 
 module.exports = {
+    darkMode: 'media',
     content: [
         /**
          * HTML. Paths to Django template files that will contain Tailwind CSS classes.
@@ -34,6 +35,7 @@ module.exports = {
         // '!../../**/node_modules',
         /* JS 2: Process all JavaScript files in the project. */
         // '../../**/*.js',
+        'node_modules/preline/dist/*.js',
 
         /**
          * Python: If you use Tailwind CSS classes in Python, uncomment the following line
@@ -54,5 +56,6 @@ module.exports = {
         require('@tailwindcss/typography'),
         require('@tailwindcss/line-clamp'),
         require('@tailwindcss/aspect-ratio'),
+        require('preline/plugin'),
     ],
 }
