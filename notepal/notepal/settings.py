@@ -24,7 +24,7 @@ DB_PORT = os.getenv("TIC_DB_PORT")
 
 if None in (DB_HOST, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT):
     raise Exception(
-        "Environment vars needed. USERCANDO_DB_NAME, USERCANDO_DB_USER, USERCANDO_DB_PASSWORD, USERCANDO_DB_HOST, USERCANDO_DB_PORT"
+        "Environment vars needed. TIC_DB_NAME, TIC_DB_USER, TIC_DB_PASSWORD, TIC_DB_HOST, TIC_DB_PORT"
     )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -149,7 +149,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-NPM_BIN_PATH = r"/usr/bin/npm"
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

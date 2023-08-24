@@ -1,19 +1,47 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-    <title>Django Tailwind</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		{% tailwind_css %}
-	</head>
+<html lang="en" class="h-full">
+<head>
+  <!-- Required Meta Tags Always Come First -->
+  <meta charset="utf-8">
+  <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://preline.co/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="a page for new Notepal users to signup">
 
-	<body class="bg-gray-50 font-serif leading-normal tracking-normal">
-		<div class="container mx-auto">
-			<section class="flex items-center justify-center h-screen">
-				<h1 class="text-5xl">Django + Tailwind = ❤️</h1>
-			</section>
-		</div>
-	</body>
+  <meta name="twitter:site" content="@preline">
+  <meta name="twitter:creator" content="@htmlstream">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Notepal signup">
+  <meta name="twitter:description" content="This page allows new Notepal users to signup">
+
+
+  <meta property="og:url" content="https://preline.co/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Preline">
+  <meta property="og:title" content="Notepal signup">
+  <meta property="og:description" content="This page allows new Notepal users to signup">
+  <!-- <meta property="og:image" content="../../assets/img/og-image.png"> -->
+  
+  <!-- Title -->
+  <title>Notepal | {{ title }}</title>
+
+  <!-- Favicon -->
+  <!-- <link rel="shortcut icon" href="../../favicon.ico"> -->
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Link your Tailwind CSS file -->
+  {% tailwind_css %}
+</head>
+
+<body class="bg-black flex h-full pb-[60px]">
+  {% block content %}
+  {% endblock content %}
+
+  <!-- JS Implementing Plugins -->
+  <script src="../../theme/static_src/node_modules/preline/dist/preline.js"></script>
+</body>
 </html>
