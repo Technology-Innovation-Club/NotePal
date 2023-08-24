@@ -4,7 +4,6 @@
 
 # Use an official Python runtime as a parent image
 FROM python:3.11-slim-buster
-
 # Set the working directory to /code
 WORKDIR /code
 
@@ -18,6 +17,13 @@ RUN apt-get update && \
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install Node.js and npm
+RUN apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean
+
+RUN node -v && npm -v
 
 # Copy the code into the container
 COPY . .
