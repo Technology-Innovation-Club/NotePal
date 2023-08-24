@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 
 note_router = Router()
 
+
 # upload a file
 @note_router.post("/upload")
 def upload(request, file: UploadedFile = File(...)):
@@ -23,27 +24,27 @@ def upload(request, file: UploadedFile = File(...)):
         except Exception as e:
             NoteFileembedding.objects.filter(id=note_file.id).delete()
             return e
-        
+
         return note_file.id
     except Exception:
         print(traceback.format_exc())
         return Exception
-    
+
+
 # get all users uploaded files
 @note_router.get("/all")
-def get_all(request, username='admin'):
+def get_all(request, username="admin"):
     output = {}
     user = get_object_or_404(User, username=username)
     note_files = NoteFileembedding.objects.filter(owner=user)
     output["files"] = [note_file.name for note_file in note_files]
     return output["files"]
 
+
 # remove a users specific file
 @note_router.delete("/remove")
-def remove(request, filename: str, username='admin'):
+def remove(request, filename: str, username="admin"):
     user = get_object_or_404(User, username=username)
     note = get_object_or_404(NoteFileembedding, name=filename, owner=user)
     note.delete()
     return f"{filename} has been removed"
-    
-    

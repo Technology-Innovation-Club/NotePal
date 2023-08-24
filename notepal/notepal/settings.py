@@ -12,6 +12,21 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+
+
+PORT = os.environ.get("PORT", 6000)
+
+DB_NAME = os.getenv("TIC_DB_NAME")
+DB_USER = os.getenv("TIC_DB_USER")
+DB_PASSWORD = os.getenv("TIC_DB_PASSWORD")
+DB_HOST = os.getenv("TIC_DB_HOST")
+DB_PORT = os.getenv("TIC_DB_PORT")
+
+if None in (DB_HOST, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT):
+    raise Exception(
+        "Environment vars needed. USERCANDO_DB_NAME, USERCANDO_DB_USER, USERCANDO_DB_PASSWORD, USERCANDO_DB_HOST, USERCANDO_DB_PORT"
+    )
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,13 +40,6 @@ SECRET_KEY = "django-insecure-66h)4&0g^$t*t*fwko+v^#ip2f#6+4g=3k8d^z0(r9qem4@qye
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-PORT = os.environ.get("PORT", 6000)
-
-DB_NAME = os.getenv("TIC_DB_NAME")
-DB_USER = os.getenv("TIC_DB_USER")
-DB_PASSWORD = os.getenv("TIC_DB_PASSWORD")
-DB_HOST = os.getenv("TIC_DB_HOST")
-DB_PORT = os.getenv("TIC_DB_PORT")
 
 ALLOWED_HOSTS = []
 
@@ -47,12 +55,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'tailwind',
-    'theme',
-    'django_browser_reload',
+    "tailwind",
+    "theme",
+    "django_browser_reload",
 ]
 
-TAILWIND_APP_NAME = 'theme'
+TAILWIND_APP_NAME = "theme"
 
 INTERNAL_IPS = [
     "127.0.0.1",

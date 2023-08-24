@@ -7,5 +7,3 @@ urlpatterns = [
     path("chat/", chat, name="chat"),
     path("", landing_page, name="landing_page"),
 ]
-
-

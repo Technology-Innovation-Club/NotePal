@@ -5,11 +5,11 @@ from django.utils import timezone
 
 def get_file_type(filename):
     # Define a regular expression pattern to match filename and file type
-    pattern = r'^(.*)\.([a-zA-Z0-9]+)$'
-    
+    pattern = r"^(.*)\.([a-zA-Z0-9]+)$"
+
     # Use re.match() to find the match
     match = re.match(pattern, filename)
-    
+
     if match:
         filetype_part = match.group(2)
         return filetype_part
@@ -18,12 +18,12 @@ def get_file_type(filename):
 
 
 def get_file_name(filename):
-      # Define a regular expression pattern to match filename and file type
-    pattern = r'^(.*)\.([a-zA-Z0-9]+)$'
-    
+    # Define a regular expression pattern to match filename and file type
+    pattern = r"^(.*)\.([a-zA-Z0-9]+)$"
+
     # Use re.match() to find the match
     match = re.match(pattern, filename)
-    
+
     if match:
         filename_part = match.group(1)
         return filename_part

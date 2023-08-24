@@ -23,12 +23,12 @@ def quiz_notify(user_message: str):
         {
             "role": "user",
             "content": user_message,
-        }
+        },
     ]
-    response =openai.ChatCompletion.create(
+    response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=message,
         temperature=0.7,
     )
-    
+
     return response

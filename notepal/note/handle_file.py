@@ -1,20 +1,17 @@
 from pypdf import PdfReader
 import docx
 from pptx import Presentation
-import pandas as pd
-import numpy as np
 import re
 
 
 def clean_and_convert_to_utf8(text):
     # Remove any non-ASCII characters and unnecessary whitespaces
-    cleaned_text = ' '.join(text.split())
-    
-    # Convert the cleaned text to UTF-8 encoding
-    utf8_text = cleaned_text.encode('utf-8', 'ignore').decode('utf-8')
-    
-    return utf8_text
+    cleaned_text = " ".join(text.split())
 
+    # Convert the cleaned text to UTF-8 encoding
+    utf8_text = cleaned_text.encode("utf-8", "ignore").decode("utf-8")
+
+    return utf8_text
 
 
 # upload DOCX file
@@ -22,19 +19,22 @@ def upload_docx_file(docx_file):
     docx_reader = docx.Document(docx_file)
     return docx_reader
 
+
 # get text from DOCX file
 def get_docx_text(docx_reader):
     fullText = []
     for para in docx_reader.paragraphs:
-            fullText.append(para.text)
-    doc_text = '\n'.join(fullText)
+        fullText.append(para.text)
+    doc_text = "\n".join(fullText)
     cleaned_text = clean_and_convert_to_utf8(doc_text)
     return cleaned_text
+
 
 # Upload PPTX file
 def upload_pptx_file(pptx_file):
     prs = Presentation(pptx_file)
     return prs
+
 
 # Get text from PPTX file
 def get_pptx_text(prs):
@@ -50,8 +50,8 @@ def get_pptx_text(prs):
                     text_runs.append(run.text)
 
     pptx_text = " ".join(text_runs)
-    pptx_text_clean = re.sub(r'[^a-zA-Z0-9_.\s]+', '', pptx_text)
-    
+    pptx_text_clean = re.sub(r"[^a-zA-Z0-9_.\s]+", "", pptx_text)
+
     pptx_cleaned_text = clean_and_convert_to_utf8(pptx_text_clean)
     return pptx_cleaned_text
 
@@ -60,6 +60,7 @@ def get_pptx_text(prs):
 def upload_pdf_file(pdf_file):
     pdf_reader = PdfReader(pdf_file)
     return pdf_reader
+
 
 # get text from PDF file
 def get_pdf_text(pdf_reader):
@@ -73,19 +74,9 @@ def get_pdf_text(pdf_reader):
     return cleaned_text
 
 
-
-    
-
-
-
-
-
-
 # TEST
 # figure out how to use regex to fix this \ problem
 # file_path = '/code/samples/CSC304-Week-9-Slides.pdf'
-
-
 
 
 # print(upload_pdf_file(file_path))

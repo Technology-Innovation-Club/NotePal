@@ -2,6 +2,7 @@ from django.db import models
 import uuid
 from django.contrib.auth.models import User
 
+
 # Table to store the users note
 class NoteFileembedding(models.Model):
     id = models.UUIDField(
@@ -12,8 +13,9 @@ class NoteFileembedding(models.Model):
     date_updated = models.DateField(auto_now=True)
     the_file = models.BinaryField()
     metadata = models.JSONField(null=True, blank=True)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, default='')
- 
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, default="")
+
+
 # Table to store the embeddings of the users note
-# add user later 
+# add user later
 # file_owner = models.ForeignKey(User, on_delete=models.CASCADE, default='')

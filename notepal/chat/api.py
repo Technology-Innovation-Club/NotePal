@@ -7,11 +7,10 @@ from chat.models import History
 chat_router = Router()
 
 
-
 # query chatbot
 @chat_router.post("/query")
 def query(request, query: str):
-    user = get_object_or_404(User, username='admin')
+    user = get_object_or_404(User, username="admin")
     response = ask_question_stuff(query)
     if len(response["query_context"]) > 0:
         user_question = response["user_question"]
@@ -20,7 +19,7 @@ def query(request, query: str):
         response_to_user = response["response_to_user"]
         llm_response = response["response"]
         user_id = user
-        
+
         # save to table
         History.objects.create(
             user_id=user_id,
@@ -37,7 +36,7 @@ def query(request, query: str):
         response_to_user = response["response_to_user"]
         llm_response = response["response"]
         user_id = user
-        
+
         History.objects.create(
             user_id=user_id,
             user_question=user_question,

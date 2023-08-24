@@ -1,4 +1,5 @@
 import openai
+
 # import os
 import tiktoken
 from pgvector.django import CosineDistance
@@ -21,7 +22,6 @@ ALWAYS use the functions to find a function to trigger quizzes when a user asks 
 # config = dotenv.dotenv_values(".env")
 openai.api_key = "<your openai api key>"
 distance_limit = 5
-
 
 
 def num_tokens_from_messages(messages, model="gpt-3.5-turbo"):
@@ -59,25 +59,30 @@ functions = [
         "parameters": {
             "type": "object",
             "properties": {
-                "user_message":{
+                "user_message": {
                     "type": "string",
                     "description": "The users question",
                 },
-                #remove these
-                "model":{"type": "string", "description": "The model to use"},
-                "temperature":{"type": "number", "description": "The temperature to use"},
+                # remove these
+                "model": {"type": "string", "description": "The model to use"},
+                "temperature": {
+                    "type": "number",
+                    "description": "The temperature to use",
+                },
             },
             "required": ["user_message"],
         },
     }
 ]
+
+
 def get_completion_stuff(msgs, model="gpt-3.5-turbo", temperature=0.7):
     response = openai.ChatCompletion.create(
         model=model,
         messages=msgs,
         temperature=temperature,
         functions=functions,
-        function_call="auto", # auto is default, but we'll be explicit
+        function_call="auto",  # auto is default, but we'll be explicit
     )
     print(f"The number of items in messages: {len(msgs)}")
     print(f"The tokens: {num_tokens_from_messages(msgs)}")
@@ -97,7 +102,7 @@ def ask_question_stuff(query):
     update_db = {}
     update_db["user_question"] = query
     query_vector = get_vector(query)
-    
+
     results = NoteEmbedding.objects.alias(
         distance=CosineDistance("vector", query_vector)
     ).filter(distance__lt=0.5)[:3]
@@ -136,7 +141,7 @@ def ask_question_stuff(query):
         function_to_call = available_functions[function_name]
         function_args = json.loads(response_message["function_call"]["arguments"])
         function_response = function_to_call(
-            user_message= function_args['user_message'],
+            user_message=function_args["user_message"],
         )
         # context.append(response_message)
         context.append(
@@ -152,10 +157,12 @@ def ask_question_stuff(query):
         # )
         response = function_response
         print(f"function response: {response.choices[0].message['content']}")
-        
+
     update_db["response"] = response.choices[0].message["content"]
     update_db["response_to_user"] = response.choices[0].message["content"]
-    context.append({"role": "assistant", "content": response.choices[0].message["content"]})
+    context.append(
+        {"role": "assistant", "content": response.choices[0].message["content"]}
+    )
     # only set in multiples of 2
     # if len(context) > 10:
     #     context.pop()
