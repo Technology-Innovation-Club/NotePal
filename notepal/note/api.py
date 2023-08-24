@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 
 note_router = Router()
 
+
 # upload a file
 @note_router.post("/upload")
 def upload(request, file: UploadedFile = File(...)):
