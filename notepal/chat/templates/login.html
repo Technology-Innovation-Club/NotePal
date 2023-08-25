@@ -33,6 +33,7 @@
                           
                     </div>
                     </div>
+                    <a class=" text-blue-400 text-sm ml-64" href="{% url 'forgot_password' %}">forgot password?</a>
                 </div>
     
               <div class="grid w-96">
@@ -43,7 +44,7 @@
                   </svg>
                 </button>
                 <p class="text-white">
-                  Don't have account?   <a href="#" class="text-gray hover:underline ml-1 hover:text-blue-400">Sign up</a>
+                  Don't have account?   <a href="{% url 'signup' %}" class="text-gray hover:underline ml-1 hover:text-blue-400">Sign up</a>
                 </p>
               </div>
             </div>
