@@ -1,1 +1,52 @@
 {% extends "base.html" %}
+
+
+{% block content %}
+<div class="max-w-[50rem] flex flex-col mx-auto w-full h-full">
+    <!-- ========== HEADER ========== -->
+    <header class="mb-auto flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full text-sm py-4">
+      <nav class="w-full px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8" aria-label="Global">
+        <div class="flex items-center justify-between">
+          <div class="sm:hidden">
+            <button type="button" class="hs-collapse-toggle p-2 inline-flex justify-center items-center gap-2 rounded-md border border-gray-700 hover:border-gray-600 font-medium text-gray-300 hover:text-white shadow-sm align-middle focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-blue-600 transition-all text-sm" data-hs-collapse="#navbar-collapse-with-animation" aria-controls="navbar-collapse-with-animation" aria-label="Toggle navigation">
+              
+             
+            </button>
+          </div>
+        </div>
+        <div id="navbar-collapse-with-animation" class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block">
+          <div class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:justify-end sm:mt-0 sm:pl-5">
+            
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!-- ========== END HEADER ========== -->
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main id="content" role="main" class="relative max-w-3xl px-4 sm:px-6 lg:px-8 flex flex-col justify-center sm:items-center mx-auto w-full h-full before:absolute before:top-0 before:left-1/2 before:bg-[url('../svg/component/squared-bg-element-dark.svg')] before:bg-no-repeat before:bg-top before:w-full before:h-full before:-z-[1] before:transform before:-translate-x-1/2">
+      <div class="text-center py-10 px-4 sm:px-6 lg:px-8">
+        <h1 class="mt-1 sm:mt-3 text-4xl font-bold text-white sm:text-6xl">
+            <span class="bg-clip-text bg-gradient-to-tr from-blue-600 to-purple-400 text-transparent font-poppins">Notepal.</span>
+          </h1>        <p class="mt-3 text-lg text-gray-300">Amplifying the Potential of Notes for Students: Your Path to Smarter Learning Begins Here</p>
+        <div class="mt-5 flex flex-col justify-center items-center gap-2 sm:flex-row sm:gap-3">
+          <a class="w-full sm:w-auto inline-flex justify-center items-center gap-x-3.5 text-center bg-white shadow-sm text-sm font-medium rounded-md hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-slate-900 transition py-3 px-4" href="{% url 'signup' %}">
+            Sign up
+          </a>
+          <a class="w-full sm:w-auto inline-flex justify-center items-center gap-x-3.5 text-center border border-2 border-gray-600 shadow-sm text-sm font-medium rounded-md text-gray-300 hover:text-white hover:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-gray-800 transition py-3 px-4" href="{% url 'login' %}">
+            Sign in
+          </a>
+        </div>
+      </div>
+    </main>
+    <!-- ========== END MAIN CONTENT ========== -->
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="mt-auto text-center py-5">
+      <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
+      </div>
+    </footer>
+    <!-- ========== END FOOTER ========== -->
+  </div>
+
+{% endblock content %}
