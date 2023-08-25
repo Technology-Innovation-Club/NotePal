@@ -12,6 +12,7 @@ def login(request):
     context = {"title": title}
     return render(request, "login.html", context)
 
+
 def forgot_password(request):
     title = "| Forgot password"
     context = {"title": title}
