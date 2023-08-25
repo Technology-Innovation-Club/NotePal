@@ -3,13 +3,13 @@ from django.shortcuts import render
 
 def signup(request):
     title = "Sign up"
-    context = {'title': title}
+    context = {"title": title}
     return render(request, "signup.html", context)
 
 
 def login(request):
     title = "Sign in"
-    context = {'title': title}
+    context = {"title": title}
     return render(request, "login.html", context)
 
 
