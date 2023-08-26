@@ -3,12 +3,14 @@ from chat.query_embedding import ask_question_stuff
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from chat.models import History
+from ninja.security import django_auth
+
 
 chat_router = Router()
 
 
 # query chatbot
-@chat_router.post("/query")
+@chat_router.post("/query", auth=django_auth)
 def query(request, query: str):
     user = get_object_or_404(User, username="admin")
     response = ask_question_stuff(query)

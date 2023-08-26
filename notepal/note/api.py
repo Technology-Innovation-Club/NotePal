@@ -6,12 +6,13 @@ from note.models import NoteFileembedding
 import traceback
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from ninja.security import django_auth
 
 note_router = Router()
 
 
 # upload a file
-@note_router.post("/upload")
+@note_router.post("/upload", auth=django_auth)
 def upload(request, file: UploadedFile = File(...)):
     try:
         file_name = get_file_name(file.name)
@@ -32,7 +33,7 @@ def upload(request, file: UploadedFile = File(...)):
 
 
 # get all users uploaded files
-@note_router.get("/all")
+@note_router.get("/all", auth=django_auth)
 def get_all(request, username="admin"):
     output = {}
     user = get_object_or_404(User, username=username)
@@ -42,7 +43,7 @@ def get_all(request, username="admin"):
 
 
 # remove a users specific file
-@note_router.delete("/remove")
+@note_router.delete("/remove", auth=django_auth)
 def remove(request, filename: str, username="admin"):
     user = get_object_or_404(User, username=username)
     note = get_object_or_404(NoteFileembedding, name=filename, owner=user)
