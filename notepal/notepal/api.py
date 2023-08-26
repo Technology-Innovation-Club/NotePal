@@ -4,7 +4,8 @@ from chat.api import chat_router
 from users.api import notepal_router
 from chat.api import chat_router
 
-api = NinjaAPI()
+
+api = NinjaAPI(csrf=True)
 
 api.add_router("/", notepal_router)
 api.add_router("/note", note_router)

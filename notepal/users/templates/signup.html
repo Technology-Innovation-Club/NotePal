@@ -16,7 +16,8 @@
             <span class="bg-clip-text bg-gradient-to-tr from-blue-600 to-purple-400 text-transparent font-poppins">Notepal.</span>
           </h2>
         
-          <form>
+          <form id="signup-form" method="post">
+            {% csrf_token %}
             <div class="mt-8 space-y-4">
               <div>
                 <label for="hs-cover-with-gradient-form-email-1" class="sr-only">Email address</label>
@@ -45,9 +46,9 @@
                 </div>
                 <!--- Confirm Password -->
                 <div>
-                    <label for="hs-cover-with-gradient-form-password-1" class="sr-only">Confirm password</label>
+                    <label for="hs-cover-with-gradient-form-confirm-password-1" class="sr-only">Confirm password</label>
                     <div class="relative">
-                    <input type="password" id="hs-cover-with-gradient-form-password-1" class="py-3 ps-11 pe-4 block w-full bg-white/[.03] border-white/20 text-white placeholder:text-white rounded-md text-sm focus:border-white/30 focus:ring-white/30 sm:p-4 sm:ps-11" placeholder="Confirm Password">
+                    <input type="password" id="hs-cover-with-gradient-form-confirm-password-1" class="py-3 ps-11 pe-4 block w-full bg-white/[.03] border-white/20 text-white placeholder:text-white rounded-md text-sm focus:border-white/30 focus:ring-white/30 sm:p-4 sm:ps-11" placeholder="Confirm Password">
                     <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 ps-4">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 text-gray-400">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />

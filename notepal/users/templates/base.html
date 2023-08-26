@@ -1,5 +1,6 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="en" class="h-full">
 <head>
   <!-- Required Meta Tags Always Come First -->
@@ -33,20 +34,23 @@
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Algolia Search -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
-    <!-- Algolia Search Override Style -->
-    <link rel="stylesheet" href="../algolia.min.css">
-
+  
+  <!-- Algolia Search -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
+  <!-- Algolia Search Override Style -->
+  <link rel="stylesheet" href="../algolia.min.css">
+  <!-- axios.min.js-->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <!-- Link your Tailwind CSS file -->
   {% tailwind_css %}
 </head>
 
 <body class="bg-black flex h-full pb-[60px]">
+  
   {% block content %}
   {% endblock content %}
-
   <!-- JS Implementing Plugins -->
+  <script src="{% static 'js/signup.js' %}"></script>
   <script src="../../theme/static_src/node_modules/preline/dist/preline.js"></script>
 </body>
 </html>
