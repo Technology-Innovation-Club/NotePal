@@ -29,9 +29,5 @@ def login_validate(data):
     if not user.is_active:
         error["Authentication error"] = "User is not active"
         raise HttpError(401, message=error)
-    
-    if not check_password(data.password, user.password):
-        error["Authentication error"] = "Wrong credentials"
-        raise HttpError(401, message=error)
     else:
         return True
