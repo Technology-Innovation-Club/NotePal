@@ -33,6 +33,11 @@ def tic_login(request, login_details: LoginSchema = Form(...)):
     else:
         return "Wrong credentials"
     
+@notepal_router.get("/logout")
+def tic_logout(request):
+    logout(request)
+    return redirect("login")
+    
 @notepal_router.post("/signup")
 def signup(request, signup_details: SignUp = Form(...)):
     if not signup_validate_required_fields(signup_details):
