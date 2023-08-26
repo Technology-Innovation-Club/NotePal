@@ -3,6 +3,9 @@ from django.contrib.auth.models import User
 from ninja.errors import HttpError
 from django.utils import timezone
 import re
+from users.login_schema import LoginSchema, login_validate_required_fields, login_validate
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect
 
 notepal_router = Router()
 
@@ -13,7 +16,23 @@ class SignUp(Schema):
     repeat_password: str
     
 
-
+@notepal_router.post("/login")
+def tic_login(request, login_details: LoginSchema = Form(...)):
+    if not login_validate_required_fields(login_details):
+        return login_validate_required_fields(login_details)
+    if not login_validate(login_details):
+        return login_validate(login_details)
+    email = login_details.email
+    password = login_details.password
+    user_signedin = User.objects.filter(email=email).first()
+    user = authenticate(request, email=email, password=password)
+    if user is not None:
+        user_signedin.last_login = timezone.now()
+        login(request, user)
+        return "Logged in"
+    else:
+        return "Wrong credentials"
+    
 @notepal_router.post("/signup")
 def signup(request, signup_details: SignUp = Form(...)):
     if not signup_validate_required_fields(signup_details):
