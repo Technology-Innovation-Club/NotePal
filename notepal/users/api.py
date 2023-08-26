@@ -4,8 +4,9 @@ from ninja.errors import HttpError
 from django.utils import timezone
 import re
 from users.login_schema import LoginSchema, login_validate_required_fields, login_validate
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect
+from django.contrib.auth import login, logout
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.hashers import check_password, make_password
 
 notepal_router = Router()
 
@@ -24,19 +25,25 @@ def tic_login(request, login_details: LoginSchema = Form(...)):
         return login_validate(login_details)
     email = login_details.email
     password = login_details.password
-    user_signedin = User.objects.filter(email=email).first()
-    user = authenticate(request, email=email, password=password)
-    if user is not None:
-        user_signedin.last_login = timezone.now()
-        login(request, user)
-        return "Logged in"
-    else:
-        return "Wrong credentials"
+
+    try:
+        user = get_object_or_404(User, email=email)
+        if check_password(password, user.password):
+            user.last_login = timezone.now()
+            user.save()
+            login(request, user)
+            return "Logged in"
+        else:
+            error = {"Authentication error": "Wrong credentials is"}
+            raise HttpError(401, message=error)
+    except User.DoesNotExist:
+        error = {"Authentication error": "User does not exist"}
+        raise HttpError(401, message=error)
     
 @notepal_router.get("/logout")
 def tic_logout(request):
     logout(request)
-    return redirect("login")
+    return "Logged out"
     
 @notepal_router.post("/signup")
 def signup(request, signup_details: SignUp = Form(...)):
@@ -46,17 +53,13 @@ def signup(request, signup_details: SignUp = Form(...)):
         return validate_signup_details(signup_details)
     password = signup_details.password
     email = signup_details.email
-
-    try:
-        user = User.objects.create_user(
-            username=email,
-            email=email,
-            password=password,
-            last_login=timezone.now(),
-        )
-    except Exception as e:
-        raise e
-
+    hashed_password = make_password(password)
+    user = User(
+        email=email,
+        password=hashed_password,
+        last_login=timezone.now(),
+    )
+    user.save()
 
     return user.notepaluser.created_ts
 
