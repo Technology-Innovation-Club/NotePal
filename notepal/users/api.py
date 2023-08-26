@@ -1,15 +1,17 @@
 from ninja import Form, Router, Schema
 from django.contrib.auth.models import User
+from ninja.errors import HttpError
+from django.utils import timezone
+import re
 
 notepal_router = Router()
 
 
 class SignUp(Schema):
-    username: str
-    password: str
-    first_name: str
-    last_name: str
     email: str
+    password: str
+    repeat_password: str
+    
 
 
 @notepal_router.post("/signup")
@@ -17,22 +19,17 @@ def signup(request, signup_details: SignUp = Form(...)):
     username = signup_details.username
     password = signup_details.password
     email = signup_details.email
-    first_name = signup_details.first_name
-    last_name = signup_details.last_name
 
-    if email_check(email):
-        try:
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password,
-                first_name=first_name,
-                last_name=last_name,
-            )
-        except Exception as e:
-            raise e
-    else:
-        return "Please sign up with your PAU email address"
+    try:
+        user = User.objects.create_user(
+            username=email,
+            email=email,
+            password=password,
+            last_login=timezone.now(),
+        )
+    except Exception as e:
+        raise e
+
 
     return user.notepaluser.created_ts
 
