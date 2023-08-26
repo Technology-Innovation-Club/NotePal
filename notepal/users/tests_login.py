@@ -25,7 +25,7 @@ class LoginTestCase(TestCase):
             "password": "testpassword",
         }
         response = self.client.post(reverse("api-1.0.0:tic_login"), login_data)
-        self.assertEqual(response.status_code, 200)  # Check for token presence
+        self.assertEqual(response.status_code, 302)
 
     # missing fields - backend
     def test_invalid_login_missing_fields(self):
@@ -40,13 +40,12 @@ class LoginTestCase(TestCase):
     # authentication error - backend
     def test_invalid_login(self):
         login_data = {
-            "username": "invalid@example.com",
             "email": "invalid@example.com",
             "password": "invalidpassword",
         }
         response = self.client.post(reverse("api-1.0.0:tic_login"), login_data)
         self.assertEqual(response.status_code, 401)  # Unauthorized status
-        # self.assertEqual(response.json(), {'detail': "{'Authentication error': 'Wrong credentials'}"})
+        self.assertEqual(response.json(), {'detail': "{'Authentication error': 'Wrong credentials'}"})
     
     # wrong password
     def test_incorrect_password(self):
@@ -64,7 +63,7 @@ class LoginTestCase(TestCase):
         }
         response = self.client.post(reverse("api-1.0.0:tic_login"), login_data)
         self.assertEqual(response.status_code, 401)  # Unauthorized status
-        # self.assertEqual(response.json(), {'detail': "{'Authentication error': 'Wrong credentials'}"})
+        self.assertEqual(response.json(), {'detail': "{'Authentication error': 'Wrong credentials'}"})
     
     # nonexistent user
     def test_nonexistent_user(self):
@@ -75,7 +74,7 @@ class LoginTestCase(TestCase):
         }
         response = self.client.post(reverse("api-1.0.0:tic_login"), login_data)
         self.assertEqual(response.status_code, 401)  # Unauthorized status
-        # self.assertEqual(response.json(), {'detail': "{'Authentication error': 'Wrong credentials'}"})
+        self.assertEqual(response.json(), {'detail': "{'Authentication error': 'Wrong credentials'}"})
         
     # check user activity
     def test_inactive_user(self):
