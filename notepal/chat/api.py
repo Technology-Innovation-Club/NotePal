@@ -49,3 +49,11 @@ def query(request, query: str):
             )
             return response["response_to_user"]
 
+# clearing chat history
+@chat_router.delete("/clear", auth=django_auth)
+def clear(request):
+    if request.user.is_authenticated:
+        user = get_object_or_404(User, username=request.user.username)
+        history_collection = History.objects.filter(user_id=user)
+        history_collection.delete()
+        return "History cleared"
