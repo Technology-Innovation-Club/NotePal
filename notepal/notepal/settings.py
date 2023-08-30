@@ -148,8 +148,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS = [
+    # Add the absolute path to the directory containing your static files
+    os.path.join(BASE_DIR, "theme/static"),
+    os.path.join(BASE_DIR, "theme/static_src"),
+    # Add more paths if needed
+]
+
 
 NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 

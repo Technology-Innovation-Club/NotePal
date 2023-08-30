@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from pgvector.django import VectorField
 from note.models import NoteFileembedding
 
-
+# Storing the user note chunks
 class NoteEmbedding(models.Model):
     id = models.AutoField(primary_key=True)
     date_created = models.DateField(auto_now_add=True)
