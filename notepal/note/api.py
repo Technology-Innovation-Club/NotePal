@@ -14,20 +14,14 @@ note_router = Router()
 
 # upload a file
 @note_router.post("/upload", auth=django_auth)
-def upload(request, file: UploadedFile = File(...)):
+def file_upload(request, file: UploadedFile = File(...)):
     if request.user.is_authenticated:
+        user_email = request.user.email
         try:
             file_name = get_file_name(file.name)
             metadata = get_metadata(file)
-            user = get_object_or_404(User, username=request.user.username)
-            # Check if a file with the same name already exists
-            existing_file = NoteFileembedding.objects.filter(file_name=file_name, owner=user).first()
-            if existing_file:
-                error = {}
-                error["error"] = "File with the same name already exists."
-                raise HttpError(409, message=error)
             
-            note_file = store_file(file.read(), file_name, metadata)
+            note_file = store_file(file.read(), file_name, metadata, user_email)
 
             try:
                 # store note chunks and embeddings
@@ -40,6 +34,10 @@ def upload(request, file: UploadedFile = File(...)):
         except Exception:
             print(traceback.format_exc())
             return Exception
+    else:
+        error = {}
+        error["error"] = "User not authenticated"
+        raise HttpError(401, message=error)
 
 # get all users uploaded files
 @note_router.get("/all", auth=django_auth)
@@ -50,6 +48,10 @@ def get_all(request):
         note_files = NoteFileembedding.objects.filter(owner=user)
         output["files"] = [note_file.name for note_file in note_files]
         return output["files"]
+    else:
+        error = {}
+        error["error"] = "User not authenticated"
+        raise HttpError(401, message=error)
 
 
 # remove a users specific file
@@ -60,3 +62,7 @@ def remove(request, filename: str):
         note = get_object_or_404(NoteFileembedding, name=filename, owner=user)
         note.delete()
         return f"{filename} has been removed"
+    else:
+        error = {}
+        error["error"] = "User not authenticated"
+        raise HttpError(401, message=error)
