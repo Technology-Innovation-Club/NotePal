@@ -1,5 +1,5 @@
 # NotePal
-NotePal is a web app that helps students take and organize their notes. It uses the OpenAI CHATGPT API to power a chatbot that can answer questions, generate text and quizzes.
+NotePal is a web app that allows students to interact with a chatbot referencing their notes. It uses the OpenAI CHATGPT API to power a chatbot that can answer questions, generate text and quizzes.
 ### Prerequisites
 
 Before you begin, make sure you have the following installed on your system:
