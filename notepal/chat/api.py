@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from chat.models import History
 from ninja.security import django_auth
+from ninja.errors import HttpError
 
 
 chat_router = Router()
@@ -48,6 +49,10 @@ def query(request, query: str):
                 llm_algo_used=llm_algo_used,
             )
             return response["response_to_user"]
+    else:
+        error = {}
+        error["error"] = "User not authenticated"
+        raise HttpError(401, message=error)
 
 # getting the history of the user
 # adding the history into context
@@ -77,3 +82,7 @@ def clear(request):
         history_collection = History.objects.filter(user_id=user)
         history_collection.delete()
         return "History cleared"
+    else:
+        error = {}
+        error["error"] = "User not authenticated"
+        raise HttpError(401, message=error)
