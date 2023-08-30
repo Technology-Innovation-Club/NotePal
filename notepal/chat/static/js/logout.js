@@ -5,7 +5,7 @@ logoutLink.addEventListener('click', async (event) => {
   event.preventDefault(); // Prevent the default link behavior
 
   try {
-    const response = await axios.get('/api/logout'); // Change the URL to your logout endpoint
+    await axios.get('/api/logout'); // Change the URL to your logout endpoint
     // Redirect the user to the login page or any other appropriate page
     window.location.href = '/login'; // Replace with the correct URL
   } catch (error) {
