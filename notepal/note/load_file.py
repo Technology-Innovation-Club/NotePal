@@ -58,8 +58,8 @@ def read_file(file_embedding: NoteFileembedding):
     return output_text
 
 
-def store_file(file, filename, metadata):
-    owner = get_object_or_404(User, username="admin")
+def store_file(file, filename, metadata, email):
+    owner = get_object_or_404(User, email=email)
     note_file = NoteFileembedding.objects.create(
         owner=owner,
         name=filename,
