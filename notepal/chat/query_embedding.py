@@ -159,8 +159,24 @@ def ask_question_stuff(query):
         # )
         response = function_response
         print(f"function response: {response.choices[0].message['content']}")
+            
+        update_db["response"] = response.choices[0].message["content"]
+        # change to JSON
+        update_db["response_to_user"] = json.loads(response.choices[0].message["content"])
+        context.append(
+            {"role": "assistant", "content": response.choices[0].message["content"]}
+        )
+        # only set in multiples of 2
+        # if len(context) > 10:
+        #     context.pop()
+        #     context.pop()
+        if num_tokens_from_messages(context) > 4000:
+            context.pop()
+            context.pop()
+        return update_db
 
     update_db["response"] = response.choices[0].message["content"]
+    # change to JSON
     update_db["response_to_user"] = response.choices[0].message["content"]
     context.append(
         {"role": "assistant", "content": response.choices[0].message["content"]}
