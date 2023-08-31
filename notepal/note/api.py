@@ -44,7 +44,7 @@ def file_upload(request, file: UploadedFile = File(...)):
 def get_all(request):
     if request.user.is_authenticated:
         output = {}
-        user = get_object_or_404(User, username=request.user.username)
+        user = get_object_or_404(User, email=request.user.email)
         note_files = NoteFileembedding.objects.filter(owner=user)
         output["files"] = [note_file.name for note_file in note_files]
         return output["files"]
