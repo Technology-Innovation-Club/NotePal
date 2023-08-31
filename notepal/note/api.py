@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from ninja.security import django_auth
 from ninja.errors import HttpError
+from .validate_file import validate_uploaded_file
 
 note_router = Router()
 
@@ -17,6 +18,8 @@ note_router = Router()
 def file_upload(request, file: UploadedFile = File(...)):
     if request.user.is_authenticated:
         user_email = request.user.email
+        if not validate_uploaded_file(file, user_email):
+            return validate_uploaded_file(file, user_email)
         try:
             file_name = get_file_name(file.name)
             metadata = get_metadata(file)
