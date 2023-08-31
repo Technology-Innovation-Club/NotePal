@@ -18,7 +18,7 @@ class LogoutTestCase(TestCase):
         
         # Send a GET request to log the user out
         response = self.client.get(reverse("api-1.0.0:tic_logout"))
-        self.assertEqual(response.status_code, 302)  # Redirect status
+        self.assertEqual(response.status_code, 200)  # Redirect status
 
         # Check that the user is logged out
         self.assertFalse(response.wsgi_request.user.is_authenticated)

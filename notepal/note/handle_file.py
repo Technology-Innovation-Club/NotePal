@@ -74,9 +74,4 @@ def get_pdf_text(pdf_reader):
     return cleaned_text
 
 
-# TEST
-# figure out how to use regex to fix this \ problem
-# file_path = '/code/samples/CSC304-Week-9-Slides.pdf'
 
-
-# print(upload_pdf_file(file_path))

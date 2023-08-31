@@ -25,7 +25,7 @@ class LoginTestCase(TestCase):
             "password": "testpassword",
         }
         response = self.client.post(reverse("api-1.0.0:tic_login"), login_data)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     # missing fields - backend
     def test_invalid_login_missing_fields(self):

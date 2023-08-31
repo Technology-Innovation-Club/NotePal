@@ -34,7 +34,7 @@ def tic_login(request, login_details: LoginSchema = Form(...)):
             login(request, user)
             return "Logged in"
         else:
-            error = {"Authentication error": "Wrong credentials is"}
+            error = {"Authentication error": "Wrong credentials"}
             raise HttpError(401, message=error)
     except User.DoesNotExist:
         error = {"Authentication error": "User does not exist"}
