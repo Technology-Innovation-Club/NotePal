@@ -1,4 +1,4 @@
-from ninja import Router
+from ninja import Router, File, Schema, Form
 from chat.query_embedding import ask_question_stuff
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
@@ -9,13 +9,16 @@ from ninja.errors import HttpError
 
 chat_router = Router()
 
+class questionSchema(Schema):
+    query: str
+
 
 # query chatbot
 @chat_router.post("/query", auth=django_auth)
-def query(request, query: str):
+def query(request, queryDetails: questionSchema = Form(...)):
     if request.user.is_authenticated:
         user = get_object_or_404(User, username=request.user.username)
-        response = ask_question_stuff(query)
+        response = ask_question_stuff(queryDetails.query)
         if len(response["query_context"]) > 0:
             user_question = response["user_question"]
             embedding_context = response["query_context"]
