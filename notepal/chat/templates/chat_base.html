@@ -37,6 +37,8 @@
     <link rel="stylesheet" href="../algolia.min.css">
       <!-- axios.min.js-->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Marked -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@2.0.0/marked.min.js"></script>
 
     <!-- Link your Tailwind CSS file -->
   {% tailwind_css %}
@@ -223,65 +225,14 @@
   <!--OpenAI insert key modal-->
   {% block content %}
   {% endblock content %}
- <!-- Search -->
- <footer class="max-w-4xl mx-auto sticky bottom-0 z-10 p-3 sm:py-6 ">
-    <div class="lg:hidden flex justify-end mb-2 sm:mb-3">
-      <!-- Sidebar Toggle -->
-      <button type="button" class="p-2 inline-flex justify-center items-center gap-1.5 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-xs dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800" data-hs-overlay="#application-sidebar" aria-controls="application-sidebar" aria-label="Toggle navigation">
-        <svg class="w-3.5 h-3.5" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
-        </svg>
-        <span>Sidebar</span>
-      </button>
-      <!-- End Sidebar Toggle -->
-    </div>
 
-    <!-- Input -->
-    <div class="relative">
-      <textarea class="p-4 pb-12 block w-full bg-gray-100 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-800 dark:border-gray-700 dark:text-gray-400" placeholder="Send a message"></textarea>
-
-      <!-- Toolbar -->
-      <div class="absolute bottom-px inset-x-px p-2 rounded-b-md bg-gray-100 dark:bg-slate-800">
-        <div class="flex justify-between items-center">
-          <!-- Button Group -->
-          <div class="flex items-center">
-            <!-- Mic Button -->
-            <button type="button" class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-gray-500 hover:text-blue-600 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:hover:text-blue-500">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-              </svg>              
-            </button>
-            <!-- End Mic Button -->
-
-          
-          </div>
-
-          <!-- End Button Group -->
-
-          <!-- Button Group -->
-          <div class="flex items-center gap-x-1">
-            
-            <!-- Send Button -->
-            <button type="button" class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-              <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
-              </svg>
-            </button>
-            <!-- End Send Button -->
-          </div>
-          <!-- End Button Group -->
-        </div>
-      </div>
-      <!-- End Toolbar -->
-    </div>
-    <!-- End Input -->
-  </footer>
 
   <!-- End Search -->
   <!-- JS Implementing Plugins -->
   <script src="{% static 'js/getdocuments.js' %}"></script>
   <script src="{% static 'js/logout.js' %}"></script>
   <script src="{% static 'js/upload.js' %}"></script>
+  <script src="{% static 'js/chat.js' %}"></script>
   <script src="{% static 'node_modules/preline/dist/preline.js' %}"></script>
 </body>
 </html>
