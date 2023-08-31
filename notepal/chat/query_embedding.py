@@ -7,6 +7,7 @@ from note.load_file import get_vector
 from chat.models import NoteEmbedding
 from chat.quiz import quiz_notify
 import json
+import os
 
 # implement the quiz feature
 SYSTEM_CONTENT = """
@@ -17,10 +18,11 @@ Ignore the context document and do not reference it in your response if it does 
 ALWAYS use the functions to find a function to trigger quizzes when a user asks for a quiz, test, questions or any form test of knowledge in anyway manner it is asked.
 """
 
+from dotenv import load_dotenv, find_dotenv
+_ = load_dotenv(find_dotenv())
 
-# openai.api_key_path='/code/.env'
-# config = dotenv.dotenv_values(".env")
-openai.api_key = "<your openai api key>"
+openai.api_key  = os.getenv('OPENAI_API_KEY')
+print(openai.api_key)
 distance_limit = 5
 
 
