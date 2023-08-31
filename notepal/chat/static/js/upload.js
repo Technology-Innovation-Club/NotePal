@@ -1,5 +1,7 @@
 const uploadButton = document.getElementById('upload-button');
 const spinningElement = document.querySelector('.animate-spin');
+const alertWrongFile = document.getElementById('alertWrongFile');
+const alertExistingFile = document.getElementById('alertExistingFile');
 
 uploadButton.addEventListener('click', async () => {
   // Get the selected file from the file input
@@ -27,7 +29,7 @@ uploadButton.addEventListener('click', async () => {
     const closeButton = document.querySelector('.hs-dropdown-toggle'); // Select the button using its class
     // Trigger the click event on the button
     if (closeButton) {
-    closeButton.click();
+      closeButton.click();
     }
   } catch (error) {
     console.error(error);
@@ -36,12 +38,17 @@ uploadButton.addEventListener('click', async () => {
         console.error('User not authenticated');
         // Redirect the user to the login page
         window.location.href = '/login'; 
-    } else if (error.response && error.response.data) {
-        console.error('Response error:', error.response.data);
+    } else if (error.response && error.response.status === 400) {
+        console.log('Displaying wrong file type alert');
+        alertWrongFile.classList.remove('hidden');
+    }else if (error.response && error.response.status === 409) {
+      console.log('Displaying existing file alert');
+        alertExistingFile.classList.remove('hidden');
+        }
     }
     // Handle other error cases here
   }
-});
+);
 
 // Function to get a cookie by name
 function getCookie(name) {
