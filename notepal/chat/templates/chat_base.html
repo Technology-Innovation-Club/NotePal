@@ -150,9 +150,21 @@
           </svg>
         </button>
         <div class="p-4 overflow-y-auto">
+          <!--spinner-->
           <div class="animate-spin hidden inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" role="status" aria-label="loading">
             <span class="sr-only">Loading...</span>
           </div>
+          <!--spinner-->
+          <!--alerts-->
+          <!--alert: wrong file type-->
+          <div id="alertWrongFile" class="bg-red-50 hidden border border-red-200 text-sm text-red-600 rounded-md p-4" role="alert">
+            Please upload a file with the correct file type.
+          </div>
+          <!--alert: existing file name-->
+          <div id="alertExistingFile" class="bg-red-50 hidden border border-red-200 text-sm text-red-600 rounded-md p-4" role="alert">
+            A file with the same name already exists. Please rename the file and try again.
+          </div>
+          <!--alerts-->
           <form id="upload-form" enctype="multipart/form-data">
             <label for="file-input" class="text-gray-800 dark:text-gray-400 mb-4 block mb-2">
               Choose a file (pptx, docx, pdf)
