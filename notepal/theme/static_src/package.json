@@ -29,6 +29,8 @@
   "dependencies": {
     "@preline/overlay": "^1.4.0",
     "@preline/tooltip": "^1.5.0",
-    "preline": "^1.9.0"
+    "marked": "^7.0.5",
+    "preline": "^1.9.0",
+    "showdown": "^2.1.0"
   }
 }
