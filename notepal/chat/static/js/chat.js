@@ -2,10 +2,18 @@
 const questionTextarea = document.querySelector('#question-area');
 const chatList = document.querySelector('#chat-list');
 const sendButton = document.querySelector('#send-button');
+const loadingSpinner = document.querySelector('#send-loading');
 
-function renderMarkdown(content) {
-  return marked(content);
+function convertMarkdown(content) {
+  var converter = new showdown.Converter();
+  var html = converter.makeHtml(content);
+  console.log(html);
+  
+  return html;
 }
+
+
+
 // Function to send a question and update the chat list
 async function sendQuestion(query) {
   const csrftoken = getCookie('csrftoken'); 
@@ -19,25 +27,6 @@ async function sendQuestion(query) {
   try {
     const response = await axios.post('/api/chat/query', queryData, { headers });
     const data = response.data;
-    
-    // Create chat bubble for question
-    const questionBubble = document.createElement('li');
-    questionBubble.innerHTML = `
-      <!-- Chat Bubble -->
-      <div class="max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto">
-        <div class="max-w-2xl flex gap-x-2 sm:gap-x-4">
-          <span class="flex-shrink-0 inline-flex items-center justify-center h-[2.375rem] w-[2.375rem] rounded-full bg-gray-600">
-            <span class="text-sm font-medium text-white leading-none">Q</span>
-          </span>
-
-          <div class="grow mt-2 space-y-3">
-            <p class="text-gray-800 dark:text-gray-200">${query}</p>
-          </div>
-        </div>
-      </div>
-      <!-- End Chat Bubble -->
-    `;
-    chatList.appendChild(questionBubble);
 
     // Create chat bubble for answer
     const answerBubble = document.createElement('li');
@@ -50,7 +39,11 @@ async function sendQuestion(query) {
         <div class="grow max-w-[90%] md:max-w-2xl w-full space-y-3">
           <!-- Card -->
           <div class="space-y-3">
-            <div class="answer-content text-sm text-gray-800 dark:text-white">${renderMarkdown(data)}</div>
+            <!-- Use the Typography classes here -->
+            <article class="prose prose-xl prose-invert">
+      
+            ${convertMarkdown(data)}
+          </article>
             <div class="space-y-1.5">
               <!-- Other content if needed -->
             </div>
@@ -63,7 +56,7 @@ async function sendQuestion(query) {
                 <button type="button" class="py-2 px-3 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all text-sm dark:hover:bg-slate-800 dark:hover:text-gray-400 dark:hover:border-gray-900 dark:focus:ring-gray-900 dark:focus:ring-offset-gray-800">
                   <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                     <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
-                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                    <!-- ...other paths -->
                   </svg>
                   Copy
                 </button>
@@ -74,8 +67,6 @@ async function sendQuestion(query) {
                   Share
                 </button>
               </div>
-
-              
             </div>
           </div>
           <!-- End Button Group -->
@@ -83,11 +74,13 @@ async function sendQuestion(query) {
       </li>
       <!-- End Chat Bubble -->
     `;
+
     chatList.appendChild(answerBubble);
   } catch (error) {
     console.error('Error sending question:', error);
   }
 }
+
 
 // Add an event listener for the Enter key and the button click
 questionTextarea.addEventListener('keydown', async (event) => {
@@ -105,12 +98,47 @@ sendButton.addEventListener('click', async () => {
 async function submitQuestion() {
   const question = document.getElementById('question-area').value;
   if (question) {
-    await sendQuestion(question);
     questionTextarea.value = '';
+    loadingSpinner.classList.remove('hidden');
+    // Create chat bubble for question and display it immediately
+    const questionBubble = document.createElement('li');
+    questionBubble.innerHTML = `
+      <!-- Chat Bubble -->
+      <div class="max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto">
+        <div class="max-w-2xl flex gap-x-2 sm:gap-x-4">
+          <span class="flex-shrink-0 inline-flex items-center justify-center h-[2.375rem] w-[2.375rem] rounded-full bg-gray-600">
+            <span class="text-sm font-medium text-white leading-none">Q</span>
+          </span>
+
+          <div class="grow mt-2 space-y-3">
+            <p class="text-gray-800 dark:text-gray-200">${question}</p>
+          </div>
+        </div>
+      </div>
+      <!-- End Chat Bubble -->
+    `;
+    chatList.appendChild(questionBubble);
     // Scroll to the latest question-answer pair
     chatList.scrollTop = chatList.scrollHeight;
+
+    // Create and display the loading spinner
+    chatList.scrollTop = chatList.scrollHeight;
+
+    try {
+      await sendQuestion(question);
+
+      // Remove the loading spinner (it should already be displayed)
+      loadingSpinner.classList.add('hidden');
+
+      // Scroll to the latest question-answer pair
+      chatList.scrollTop = chatList.scrollHeight;
+    } catch (error) {
+      console.error('Error sending question:', error);
+      // Handle the error here, e.g., by displaying an error message to the user.
+    }
   }
 }
+
 
 // Function to get a cookie by name
 function getCookie(name) {
