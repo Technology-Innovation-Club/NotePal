@@ -13,7 +13,7 @@ import os
 SYSTEM_CONTENT = """
 you are a students assistant. 
 Use the current reference document to improve the current response to the users question. The output should be a response that is easy for the student to understand. 
-The format of the response should be in markdown format when required to boost the students understanding of the response. The response should also be to the point and not contain unnecessary information.
+Always show your answer in markdown format to boost the students understanding of the response, it should also be appropriately structured and spaced. The response should also be to the point and not contain unnecessary information.
 Ignore the context document and do not reference it in your response if it does not apply to the question.  
 ALWAYS use the functions to find a function to trigger quizzes when a user asks for a quiz, test, questions or any form test of knowledge in anyway manner it is asked.
 """
@@ -22,7 +22,6 @@ from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv())
 
 openai.api_key  = os.getenv('OPENAI_API_KEY')
-print(openai.api_key)
 distance_limit = 5
 
 
@@ -178,6 +177,7 @@ def ask_question_stuff(query):
     update_db["response"] = response.choices[0].message["content"]
     # change to JSON
     update_db["response_to_user"] = response.choices[0].message["content"]
+    print(f"response: {response.choices[0].message['content']}")
     context.append(
         {"role": "assistant", "content": response.choices[0].message["content"]}
     )
