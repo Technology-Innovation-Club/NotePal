@@ -3,10 +3,42 @@
 <!-- Content -->
 <div class="relative h-screen">
   <div class="py-10 lg:py-14">
-    
-
+    <!-- alert delete history-->
+    <div class="absolute top-0 right-0 hidden">
+      <div class="max-w-xs bg-white border rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-700" role="alert">
+        <div class="p-2 sm:p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 dark:text-red-600">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+              </svg>
+              
+            </div>
+            <div class="ml-4">
+              <h3 class="text-gray-800 font-semibold dark:text-white">
+                Delete chat history?
+              </h3>
+              <div class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                Once you delete your chat history, you will not be able to recover it. Are you sure you want to continue?
+              </div>
+              <div class="mt-4">
+                <div class="flex space-x-3">
+                  <button type="button" class="inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-medium text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm">
+                    Don't allow
+                  </button>
+                  <button type="button" class="inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-medium text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm">
+                    Allow
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- alert delete history-->
     <ul id="chat-list" class="mt-16 space-y-5">
- 
+     
 
       <!-- Chat Bubble -->
       <li class="py-2 sm:py-4">
@@ -41,6 +73,7 @@
             <p class="text-sm text-gray-800 dark:text-white">
               How many legs does a dog have?
             </p>
+            <span id="correct-badge" class=" hidden inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-500 text-white">Correct</span>><p class="text-green-500 hidden">The correct answer should be here</p>
             <div class="space-y-1.5">
               <div class="grid space-y-2">
                 <label for="hs-vertical-radio-in-form" class="max-w-xs flex p-3 block w-full bg-white border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400">
@@ -66,7 +99,9 @@
           <div>
             <div class="sm:flex sm:justify-between">
               <div>
-              
+                <button type="button" class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
+                  Submit
+                </button>
                 
               </div>
 
@@ -173,6 +208,7 @@
             <p class="text-sm text-gray-800 dark:text-white">
               Describe what the food a dog likes?
             </p>
+            <span id="wrong-badge" class=" inline-flex hidden items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500 text-white">Wrong</span><p id="correct-answer" class="text-green-500 hidden">The correct answer should be here</p>
             <div class="space-y-1.5">
               <input type="text" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 sm:p-5" placeholder="Type your answer">            </div>
           </div>
@@ -184,7 +220,9 @@
           <div>
             <div class="sm:flex sm:justify-between">
               <div>
-              
+                <button type="button" class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
+                  Submit
+                </button>
                 
               </div>
 
@@ -223,6 +261,11 @@
         <!-- Toolbar -->
         <div class="absolute bottom-px inset-x-px p-2 rounded-b-md bg-white dark:bg-slate-900">
           <div class="flex justify-between items-center">
+            <button class="text-slate-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-slate-400 dark:hover:text-slate-300">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+              </svg>                
+            </button>
             <!-- Button Group -->
             <div class="flex items-center">
               <div id="send-loading" class="animate-spin hidden inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-400 rounded-full" role="status" aria-label="loading">
@@ -233,8 +276,6 @@
 
             <!-- Button Group -->
             <div class="flex items-center gap-x-1">
-              
-
               <!-- Send Button -->
               <button id="send-button" type="button" class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                 <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
