@@ -38,215 +38,15 @@
     </div>
     <!-- alert delete history-->
     <ul id="chat-list" class="mt-16 space-y-5">
-     
-
-      <!-- Chat Bubble -->
-      <li class="py-2 sm:py-4">
-        <div class="max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto">
-          <div class="max-w-2xl flex gap-x-2 sm:gap-x-4">
-            <span class="flex-shrink-0 inline-flex items-center justify-center h-[2.375rem] w-[2.375rem] rounded-full bg-gray-600">
-              <span class="text-sm font-medium text-white leading-none">AZ</span>
-            </span>
-
-            <div class="grow mt-2 space-y-3">
-              <p class="text-gray-800 dark:text-gray-200">
-                Give me some questions to answer
-              </p>
-            </div>
-          </div>
-        </div>
-      </li>
-      <!-- End Chat Bubble -->
-
-      <!-- Chat Bubble -->
-      <li class="max-w-4xl py-2 px-4 sm:px-6 lg:px-8 mx-auto flex gap-x-2 sm:gap-x-4">
-        <svg class="flex-shrink-0 w-[2.375rem] h-[2.375rem] rounded-full" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="38" height="38" rx="6" fill="#2563EB"/>
-          <path d="M10 28V18.64C10 13.8683 14.0294 10 19 10C23.9706 10 28 13.8683 28 18.64C28 23.4117 23.9706 27.28 19 27.28H18.25" stroke="white" stroke-width="1.5"/>
-          <path d="M13 28V18.7552C13 15.5104 15.6863 12.88 19 12.88C22.3137 12.88 25 15.5104 25 18.7552C25 22 22.3137 24.6304 19 24.6304H18.25" stroke="white" stroke-width="1.5"/>
-          <ellipse cx="19" cy="18.6554" rx="3.75" ry="3.6" fill="white"/>
-        </svg>
-
-        <div class="grow max-w-[90%] md:max-w-2xl w-full space-y-3">
-          <!-- Card -->
-          <div class="space-y-3">
-            <p class="text-sm text-gray-800 dark:text-white">
-              How many legs does a dog have?
-            </p>
-            <span id="correct-badge" class=" hidden inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-500 text-white">Correct</span>><p class="text-green-500 hidden">The correct answer should be here</p>
-            <div class="space-y-1.5">
-              <div class="grid space-y-2">
-                <label for="hs-vertical-radio-in-form" class="max-w-xs flex p-3 block w-full bg-white border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400">
-                  <input type="radio" name="hs-vertical-radio-in-form" class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" id="hs-vertical-radio-in-form">
-                  <span class="text-sm text-gray-500 ml-3 dark:text-gray-400">1 leg</p>
-                </label>
-              
-                <label for="hs-vertical-radio-checked-in-form" class="max-w-xs flex p-3 block w-full bg-white border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400">
-                  <input type="radio" name="hs-vertical-radio-in-form" class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" id="hs-vertical-radio-checked-in-form" checked>
-                  <span class="text-sm text-gray-500 ml-3 dark:text-gray-400">2 legs</p>
-                </label>
-      
-                <label for="hs-vertical-radio-checked-in-form" class="max-w-xs flex p-3 block w-full bg-white border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400">
-                  <input type="radio" name="hs-vertical-radio-in-form" class="shrink-0 mt-0.5 border-gray-200 rounded-full text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" id="hs-vertical-radio-checked-in-form" checked>
-                  <span class="text-sm text-gray-500 ml-3 dark:text-gray-400">3 legs</p>
-                </label>
-              </div>
-            </div>
-          </div>
-          <!-- End Card -->
-
-          <!-- Button Group -->
-          <div>
-            <div class="sm:flex sm:justify-between">
-              <div>
-                <button type="button" class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
-                  Submit
-                </button>
-                
-              </div>
-
-              <div class="mt-1 sm:mt-0">
-                <a class="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 rounded-md pointer-events-none" href="#">
-                  <span aria-hidden="true">«</span>
-                  <span>Previous</span>
-                </a>
-                <a class="text-gray-500 hover:text-blue-600 p-4 inline-flex items-center gap-2 rounded-md" href="#">
-                  <span>Next</span>
-                  <span aria-hidden="true">»</span>
-                </a>
-              </div>
-            </div>
-          </div>
-          <!-- End Button Group -->
-        </div>
-      </li>
-      <!-- End Chat Bubble -->
-
       <!-- Chat Bubble -->
      
       <!-- End Chat Bubble -->
 
-      <!-- Chat Bubble -->
-      <li class="py-2 sm:py-4">
-        <div class="max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto">
-          <div class="max-w-2xl flex gap-x-2 sm:gap-x-4">
-            <span class="flex-shrink-0 inline-flex items-center justify-center h-[2.375rem] w-[2.375rem] rounded-full bg-gray-600">
-              <span class="text-sm font-medium text-white leading-none">AZ</span>
-            </span>
-
-            <div class="grow mt-2 space-y-3">
-              <p class="text-gray-800 dark:text-gray-200">
-                2 files uploaded
-              </p>
-
-              <ul class="flex flex-col justify-end text-start -space-y-px">
-                <li class="flex items-center gap-x-2 p-3 text-sm bg-white border text-gray-800 first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-slate-900 dark:border-gray-700 dark:text-gray-200">
-                  <div class="w-full flex justify-between truncate">
-                    <span class="mr-3 flex-1 w-0 truncate">
-                      resume_web_ui_developer.csv
-                    </span>
-                    <a class="flex items-center gap-x-2 text-gray-500 hover:text-blue-500 whitespace-nowrap" href="javascript:;">
-                      <svg class="flex-shrink-0 w-3 h-3" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                      </svg>
-                      Download
-                    </a>
-                  </div>
-                </li>
-                <li class="flex items-center gap-x-2 p-3 text-sm bg-white border text-gray-800 first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-slate-900 dark:border-gray-700 dark:text-gray-200">
-                  <div class="w-full flex justify-between truncate">
-                    <span class="mr-3 flex-1 w-0 truncate">
-                      coverletter_web_ui_developer.pdf
-                    </span>
-                    <a class="flex items-center gap-x-2 text-gray-500 hover:text-blue-500 whitespace-nowrap" href="javascript:;">
-                      <svg class="flex-shrink-0 w-3 h-3" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                      </svg>
-                      Download
-                    </a>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </li>
-      <!-- End Chat Bubble -->
-
-      <!-- Chat Bubble -->
-      <li class="py-2 sm:py-4">
-        <div class="max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto">
-          <div class="max-w-2xl flex gap-x-2 sm:gap-x-4">
-            <span class="flex-shrink-0 inline-flex items-center justify-center h-[2.375rem] w-[2.375rem] rounded-full bg-gray-600">
-              <span class="text-sm font-medium text-white leading-none">AZ</span>
-            </span>
-
-            <div class="grow mt-2 space-y-3">
-              <p class="text-gray-800 dark:text-gray-200">
-                Give me some questions to answer
-              </p>
-            </div>
-          </div>
-        </div>
-      </li>
-      <!-- End Chat Bubble -->
-
-      <!-- Chat Bubble -->
-      <li class="max-w-4xl py-2 px-4 sm:px-6 lg:px-8 mx-auto flex gap-x-2 sm:gap-x-4">
-        <svg class="flex-shrink-0 w-[2.375rem] h-[2.375rem] rounded-full" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="38" height="38" rx="6" fill="#2563EB"/>
-          <path d="M10 28V18.64C10 13.8683 14.0294 10 19 10C23.9706 10 28 13.8683 28 18.64C28 23.4117 23.9706 27.28 19 27.28H18.25" stroke="white" stroke-width="1.5"/>
-          <path d="M13 28V18.7552C13 15.5104 15.6863 12.88 19 12.88C22.3137 12.88 25 15.5104 25 18.7552C25 22 22.3137 24.6304 19 24.6304H18.25" stroke="white" stroke-width="1.5"/>
-          <ellipse cx="19" cy="18.6554" rx="3.75" ry="3.6" fill="white"/>
-        </svg>
-
-        <div class="grow max-w-[90%] md:max-w-2xl w-full space-y-3">
-          <!-- Card -->
-          <div class="space-y-3">
-            <p class="text-sm text-gray-800 dark:text-white">
-              Describe what the food a dog likes?
-            </p>
-            <span id="wrong-badge" class=" inline-flex hidden items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500 text-white">Wrong</span><p id="correct-answer" class="text-green-500 hidden">The correct answer should be here</p>
-            <div class="space-y-1.5">
-              <input type="text" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 sm:p-5" placeholder="Type your answer">            </div>
-          </div>
-          <!-- End Card -->
-
-         
-
-          <!-- Button Group -->
-          <div>
-            <div class="sm:flex sm:justify-between">
-              <div>
-                <button type="button" class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
-                  Submit
-                </button>
-                
-              </div>
-
-              <div class="mt-1 sm:mt-0">
-                <a class="text-gray-400 hover:text-blue-600 p-4 inline-flex items-center gap-2 rounded-md pointer-events-none" href="#">
-                  <span aria-hidden="true">«</span>
-                  <span>Previous</span>
-                </a>
-                <a class="text-gray-500 hover:text-blue-600 p-4 inline-flex items-center gap-2 rounded-md" href="#">
-                  <span>Next</span>
-                  <span aria-hidden="true">»</span>
-                </a>
-              </div>
-            </div>
-          </div>
-          <!-- End Button Group -->
-        </div>
-      </li>
-      <!-- End Chat Bubble -->
     </ul>
   </div>
 
   <!-- Search -->
-  <footer class="sticky bottom-0 z-10 bg-white border-t border-gray-200 pt-2 pb-3 sm:pt-4 sm:pb-6 dark:bg-slate-900 dark:border-gray-700">
+  <footer class="sticky -bottom-14 z-10 bg-white border-t border-gray-200 pt-2 pb-3 sm:pt-4 sm:pb-6 dark:bg-slate-900 dark:border-gray-700">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center mb-3">
         
@@ -256,6 +56,11 @@
 
       <!-- Input -->
       <div class="relative">
+        <div class="flex items-center">
+          <div id="send-loading" class="animate-spin mb-3 hidden  inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-400 rounded-full" role="status" aria-label="loading">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
         <textarea id="question-area" class="p-4 pb-12 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400" placeholder="Ask me anything..."></textarea>
 
         <!-- Toolbar -->
@@ -267,11 +72,7 @@
               </svg>                
             </button>
             <!-- Button Group -->
-            <div class="flex items-center">
-              <div id="send-loading" class="animate-spin hidden inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-gray-400 rounded-full" role="status" aria-label="loading">
-                <span class="sr-only">Loading...</span>
-              </div>
-            </div>
+            
             <!-- End Button Group -->
 
             <!-- Button Group -->
