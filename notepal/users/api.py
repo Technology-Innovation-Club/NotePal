@@ -55,6 +55,7 @@ def signup(request, signup_details: SignUp = Form(...)):
     email = signup_details.email
     hashed_password = make_password(password)
     user = User(
+        username=email,
         email=email,
         password=hashed_password,
         last_login=timezone.now(),
