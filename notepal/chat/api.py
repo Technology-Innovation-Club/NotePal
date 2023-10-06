@@ -29,7 +29,7 @@ def query(request, queryDetails: questionSchema = Form(...)):
 
             # save to table
             History.objects.create(
-                user_id=user_id,
+                user_owner=user_id,
                 user_question=user_question,
                 llm_response=llm_response,
                 response_to_user=response_to_user,
@@ -45,7 +45,7 @@ def query(request, queryDetails: questionSchema = Form(...)):
             user_id = user
 
             History.objects.create(
-                user_id=user_id,
+                user_owner=user_id,
                 user_question=user_question,
                 llm_response=llm_response,
                 response_to_user=response_to_user,

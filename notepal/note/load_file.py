@@ -1,5 +1,4 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-
 # from load_file import
 from note.models import NoteFileembedding
 from chat.models import NoteEmbedding
@@ -17,6 +16,9 @@ from .handle_file import (
 )
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from chat.models import History
+
+
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
@@ -68,11 +70,26 @@ def store_file(file, filename, metadata, email):
         date_created=timezone.now(),
         date_updated=timezone.now(),
     )
+    # add_to_history
+    History.objects.create(
+        user_owner = owner, 
+        file_uploaded = note_file
+    )
+    
 
     return note_file
 
+def store_file_history(email, note_file: NoteFileembedding):
+    owner = get_object_or_404(User, email=email)
+    note_embed = get_object_or_404(NoteFileembedding, id=note_file.id, owner=owner)
+    history = History.objects.create(
+        user_owner = owner, 
+        file_uploaded = note_embed
+        )
+    return history
 
-def store_file_embedding(file_embedding: NoteFileembedding):
+
+def store_file_embedding(file_embedding):
     text = read_file(file_embedding)
     chunks = get_chunks(text)
     for i in range(len(chunks)):
