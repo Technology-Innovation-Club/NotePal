@@ -11,7 +11,7 @@ from ninja.errors import HttpError
 from .validate_file import validate_uploaded_file
 from users.models import NotepalUser
 from ninja import Schema
-
+import openai
 
 
 note_router = Router()
@@ -51,51 +51,35 @@ def file_upload(request, file: UploadedFile = File(...)):
 
 
 
-# remove a users specific file
-@note_router.delete("/remove", auth=django_auth)
-def remove(request, filename: str):
-    if request.user.is_authenticated:
-        user = get_object_or_404(User, username=request.user.username)
-        note = get_object_or_404(NoteFileembedding, name=filename, owner=user)
-        note.delete()
-        return f"{filename} has been removed"
-    else:
-        error = {}
-        error["error"] = "User not authenticated"
-        raise HttpError(401, message=error)
+
 
 @note_router.post("/add-api-key", auth=django_auth)
 def add_api_key(request, APIKEY: ApiKeySchema = Form(...)):
-    owner = get_object_or_404(User, email=request.user.email)
-    if request.user.is_authenticated:
-        try:
-            notepal_user = get_object_or_404(NotepalUser,user=owner)
-            notepal_user.api_key = APIKEY.api_key
-            notepal_user.save()
-            return {"message": "API key added successfully"}
-        except NotepalUser.DoesNotExist:
-            return {"message": "NotepalUser does not exist"}
-    else:
+  owner = get_object_or_404(User, email=request.user.email)
+
+  if request.user.is_authenticated:
+      notepal_user = get_object_or_404(NotepalUser,user=owner)
+        # Check if the user's API key is valid
+      try:
+          openai.api_key = APIKEY.api_key
+          response = openai.Completion.create(
+            engine="davinci",
+            prompt="This is a test.",
+            max_tokens=5
+        )
+      except Exception as e:
+          raise HttpError(400, message={"error": "Invalid API key"})
+
+        # The API key is valid
+      notepal_user.api_key = APIKEY.api_key
+      notepal_user.save()
+
+      return {"message": "API key added successfully"}
+  else:
         error = {}
         error["error"] = "User not authenticated"
         raise HttpError(401, message=error)
 
-
-@note_router.post("/remove-api-key", auth=django_auth)
-def remove_api_key(request):
-    owner = get_object_or_404(User, email=request.user.email)
-    if request.user.is_authenticated:
-        try:
-            notepal_user = get_object_or_404(NotepalUser, user=owner)
-            notepal_user.api_key = ''
-            notepal_user.save()
-            return {"message": "API key removed successfully"}
-        except NotepalUser.DoesNotExist:
-            return {"message": "NotepalUser does not exist"}
-    else:
-        error = {}
-        error["error"] = "User not authenticated"
-        raise HttpError(401, message=error)
 
 
 @note_router.get("/view-api-key", auth=django_auth)
