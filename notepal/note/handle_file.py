@@ -72,6 +72,3 @@ def get_pdf_text(pdf_reader):
         pdf_text += page.extract_text()
     cleaned_text = clean_and_convert_to_utf8(pdf_text)
     return cleaned_text
-
-
-

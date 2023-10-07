@@ -20,6 +20,7 @@ note_router = Router()
 class ApiKeySchema(Schema):
     api_key: str
 
+
 # upload a file
 @note_router.post("/upload", auth=django_auth)
 def file_upload(request, file: UploadedFile = File(...)):
@@ -30,56 +31,48 @@ def file_upload(request, file: UploadedFile = File(...)):
         try:
             file_name = get_file_name(file.name)
             metadata = get_metadata(file)
-            
+
             note_file = store_file(file.read(), file_name, metadata, user_email)
-            
-            
+
             try:
                 # store note chunks and embeddings
                 store_file_embedding(note_file)
             except Exception as e:
                 NoteFileembedding.objects.filter(id=note_file.id).delete()
-            
+
             return str(note_file)
         except Exception as e:
-            return Exception 
+            return Exception
     else:
         error = {}
         error["error"] = "User not authenticated"
         raise HttpError(401, message=error)
 
 
-
-
-
-
 @note_router.post("/add-api-key", auth=django_auth)
 def add_api_key(request, APIKEY: ApiKeySchema = Form(...)):
-  owner = get_object_or_404(User, email=request.user.email)
+    owner = get_object_or_404(User, email=request.user.email)
 
-  if request.user.is_authenticated:
-      notepal_user = get_object_or_404(NotepalUser,user=owner)
+    if request.user.is_authenticated:
+        notepal_user = get_object_or_404(NotepalUser, user=owner)
         # Check if the user's API key is valid
-      try:
-          openai.api_key = APIKEY.api_key
-          response = openai.Completion.create(
-            engine="davinci",
-            prompt="This is a test.",
-            max_tokens=5
-        )
-      except Exception as e:
-          raise HttpError(400, message={"error": "Invalid API key"})
+        try:
+            openai.api_key = APIKEY.api_key
+            response = openai.Completion.create(
+                engine="davinci", prompt="This is a test.", max_tokens=5
+            )
+        except Exception as e:
+            raise HttpError(400, message={"error": "Invalid API key"})
 
         # The API key is valid
-      notepal_user.api_key = APIKEY.api_key
-      notepal_user.save()
+        notepal_user.api_key = APIKEY.api_key
+        notepal_user.save()
 
-      return {"message": "API key added successfully"}
-  else:
+        return {"message": "API key added successfully"}
+    else:
         error = {}
         error["error"] = "User not authenticated"
         raise HttpError(401, message=error)
-
 
 
 @note_router.get("/view-api-key", auth=django_auth)

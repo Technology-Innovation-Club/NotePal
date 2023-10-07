@@ -13,10 +13,10 @@ from users.models import NotepalUser
 
 # system with quiz
 # SYSTEM_CONTENT = """
-# you are a students assistant. 
-# Use the current reference document to improve the current response to the users question. The output should be a response that is easy for the student to understand. 
+# you are a students assistant.
+# Use the current reference document to improve the current response to the users question. The output should be a response that is easy for the student to understand.
 # Always show your answer in markdown format to boost the students understanding of the response, it should also be appropriately structured and spaced. The response should also be to the point and not contain unnecessary information.
-# Ignore the context document and do not reference it in your response if it does not apply to the question.  
+# Ignore the context document and do not reference it in your response if it does not apply to the question.
 # ALWAYS use the functions to find a function to trigger quizzes when a user asks for a quiz, test, questions or any form test of knowledge in anyway manner it is asked.
 # """
 SYSTEM_CONTENT = """
@@ -26,13 +26,15 @@ Always show your answer in markdown format to boost the students understanding o
 Ignore the context document and do not reference it in your response if it does not apply to the question.  
 """
 
+
 def get_api_key(user):
-  notepal_user = NotepalUser.objects.get(user=user)
-  api_key = notepal_user.api_key
-  return api_key
+    notepal_user = NotepalUser.objects.get(user=user)
+    api_key = notepal_user.api_key
+    return api_key
 
 
 from dotenv import load_dotenv, find_dotenv
+
 _ = load_dotenv(find_dotenv())
 
 
@@ -92,7 +94,7 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo"):
 
 
 def get_completion_stuff(user, msgs, model="gpt-3.5-turbo", temperature=0.7):
-    openai.api_key  = get_api_key(user)
+    openai.api_key = get_api_key(user)
     response = openai.ChatCompletion.create(
         model=model,
         messages=msgs,
@@ -173,7 +175,7 @@ def ask_question_stuff(user, query):
     #     # )
     #     response = function_response
     #     print(f"function response: {response.choices[0].message['content']}")
-            
+
     #     update_db["response"] = response.choices[0].message["content"]
     #     # change to JSON
     #     update_db["response_to_user"] = json.loads(response.choices[0].message["content"])
