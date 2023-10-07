@@ -27,3 +27,4 @@ class History(models.Model):
     file_uploaded = models.ForeignKey(
         NoteFileembedding, on_delete=models.CASCADE, null=True, blank=True
     )
+    the_file = models.BinaryField(null=True, blank=True)
