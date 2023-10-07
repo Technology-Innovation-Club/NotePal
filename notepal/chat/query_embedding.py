@@ -8,6 +8,8 @@ from chat.models import NoteEmbedding
 from chat.quiz import quiz_notify
 import json
 import os
+from users.models import NotepalUser
+
 
 # system with quiz
 # SYSTEM_CONTENT = """
@@ -24,10 +26,16 @@ Always show your answer in markdown format to boost the students understanding o
 Ignore the context document and do not reference it in your response if it does not apply to the question.  
 """
 
+def get_api_key(user):
+  notepal_user = NotepalUser.objects.get(user=user)
+  api_key = notepal_user.api_key
+  return api_key
+
+
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv())
 
-openai.api_key  = os.getenv('OPENAI_API_KEY')
+
 distance_limit = 5
 
 
@@ -83,7 +91,8 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo"):
 # ]
 
 
-def get_completion_stuff(msgs, model="gpt-3.5-turbo", temperature=0.7):
+def get_completion_stuff(user, msgs, model="gpt-3.5-turbo", temperature=0.7):
+    openai.api_key  = get_api_key(user)
     response = openai.ChatCompletion.create(
         model=model,
         messages=msgs,
@@ -105,7 +114,7 @@ context = [
 ]
 
 
-def ask_question_stuff(query):
+def ask_question_stuff(user, query):
     update_db = {}
     update_db["user_question"] = query
     query_vector = get_vector(query)
@@ -138,7 +147,7 @@ def ask_question_stuff(query):
             "content": f"Answer the question {query}",
         }
     )
-    response = get_completion_stuff(context)
+    response = get_completion_stuff(user, context)
     response_message = response["choices"][0]["message"]
     # if response_message.get("function_call"):
     #     available_functions = {

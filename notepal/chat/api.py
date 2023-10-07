@@ -18,7 +18,7 @@ class questionSchema(Schema):
 def query(request, queryDetails: questionSchema = Form(...)):
     if request.user.is_authenticated:
         user = get_object_or_404(User, username=request.user.username)
-        response = ask_question_stuff(queryDetails.query)
+        response = ask_question_stuff(request.user, queryDetails.query)
         if len(response["query_context"]) > 0:
             user_question = response["user_question"]
             embedding_context = response["query_context"]
