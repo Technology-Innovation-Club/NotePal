@@ -57,35 +57,3 @@ def query(request, queryDetails: questionSchema = Form(...)):
         error["error"] = "User not authenticated"
         raise HttpError(401, message=error)
 
-# getting the history of the user
-# adding the history into context
-@chat_router.get("/history", auth=django_auth)
-def history(request):
-    if request.user.is_authenticated:
-        user = get_object_or_404(User, username=request.user.username)
-        history_collection = History.objects.filter(user_id=user)
-        output = {}
-        output["history"] = [
-            {
-                "user_question": history.user_question,
-                "llm_response": history.llm_response,
-                "response_to_user": history.response_to_user,
-                "llm_algo_used": history.llm_algo_used,
-                "embedding_context": history.embedding_context,
-            }
-            for history in history_collection
-        ]
-        return output["history"]
-
-# clearing chat history
-@chat_router.delete("/clear", auth=django_auth)
-def clear(request):
-    if request.user.is_authenticated:
-        user = get_object_or_404(User, username=request.user.username)
-        history_collection = History.objects.filter(user_id=user)
-        history_collection.delete()
-        return "History cleared"
-    else:
-        error = {}
-        error["error"] = "User not authenticated"
-        raise HttpError(401, message=error)
