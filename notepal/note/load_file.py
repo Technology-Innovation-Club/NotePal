@@ -75,12 +75,10 @@ def store_file(file, filename, metadata, email):
 
     return note_file
 
-
-def store_file_history(email, note_file: NoteFileembedding):
+def store_pdf_file_history(email,file):
     owner = get_object_or_404(User, email=email)
-    note_embed = get_object_or_404(NoteFileembedding, id=note_file.id, owner=owner)
-    history = History.objects.create(user_owner=owner, file_uploaded=note_embed)
-    return history
+    store_pdf = History.objects.create(user_owner=owner, the_file=file)
+    return store_pdf
 
 
 def store_file_embedding(file_embedding):

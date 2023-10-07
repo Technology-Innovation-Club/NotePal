@@ -1,6 +1,6 @@
 from ninja import Router, File, Schema, Form
 from ninja.files import UploadedFile
-from .load_file import store_file, store_file_embedding, store_file_history
+from .load_file import store_file, store_file_embedding
 from .metadata import get_file_name, get_metadata
 from note.models import NoteFileembedding
 import traceback
