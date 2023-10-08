@@ -19,6 +19,7 @@ def login_validate_required_fields(data):
         raise HttpError(422, message=errors)
     return True
 
+
 def login_validate(data):
     error = {}
     if User.objects.filter(email=data.email).exists():

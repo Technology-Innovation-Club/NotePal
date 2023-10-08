@@ -1,6 +1,6 @@
 from ninja import Router, File, Schema, Form
 from chat.query_embedding import ask_question_stuff
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, HttpResponse
 from django.contrib.auth.models import User
 from chat.models import History
 from ninja.security import django_auth
@@ -8,6 +8,7 @@ from ninja.errors import HttpError
 
 
 chat_router = Router()
+
 
 class questionSchema(Schema):
     query: str
@@ -18,7 +19,7 @@ class questionSchema(Schema):
 def query(request, queryDetails: questionSchema = Form(...)):
     if request.user.is_authenticated:
         user = get_object_or_404(User, username=request.user.username)
-        response = ask_question_stuff(queryDetails.query)
+        response = ask_question_stuff(request.user, queryDetails.query)
         if len(response["query_context"]) > 0:
             user_question = response["user_question"]
             embedding_context = response["query_context"]
@@ -29,7 +30,7 @@ def query(request, queryDetails: questionSchema = Form(...)):
 
             # save to table
             History.objects.create(
-                user_id=user_id,
+                user_owner=user_id,
                 user_question=user_question,
                 llm_response=llm_response,
                 response_to_user=response_to_user,
@@ -45,46 +46,13 @@ def query(request, queryDetails: questionSchema = Form(...)):
             user_id = user
 
             History.objects.create(
-                user_id=user_id,
+                user_owner=user_id,
                 user_question=user_question,
                 llm_response=llm_response,
                 response_to_user=response_to_user,
                 llm_algo_used=llm_algo_used,
             )
             return response["response_to_user"]
-    else:
-        error = {}
-        error["error"] = "User not authenticated"
-        raise HttpError(401, message=error)
-
-# getting the history of the user
-# adding the history into context
-@chat_router.get("/history", auth=django_auth)
-def history(request):
-    if request.user.is_authenticated:
-        user = get_object_or_404(User, username=request.user.username)
-        history_collection = History.objects.filter(user_id=user)
-        output = {}
-        output["history"] = [
-            {
-                "user_question": history.user_question,
-                "llm_response": history.llm_response,
-                "response_to_user": history.response_to_user,
-                "llm_algo_used": history.llm_algo_used,
-                "embedding_context": history.embedding_context,
-            }
-            for history in history_collection
-        ]
-        return output["history"]
-
-# clearing chat history
-@chat_router.delete("/clear", auth=django_auth)
-def clear(request):
-    if request.user.is_authenticated:
-        user = get_object_or_404(User, username=request.user.username)
-        history_collection = History.objects.filter(user_id=user)
-        history_collection.delete()
-        return "History cleared"
     else:
         error = {}
         error["error"] = "User not authenticated"

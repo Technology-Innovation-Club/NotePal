@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from pgvector.django import VectorField
 from note.models import NoteFileembedding
 
+
 # Storing the user note chunks
 class NoteEmbedding(models.Model):
     id = models.AutoField(primary_key=True)
@@ -17,9 +18,13 @@ class History(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, editable=False, primary_key=True
     )
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    user_question = models.TextField()
-    llm_response = models.TextField()
-    response_to_user = models.TextField()
-    llm_algo_used = models.TextField()
+    user_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_question = models.TextField(null=True, blank=True)
+    llm_response = models.TextField(null=True, blank=True)
+    response_to_user = models.TextField(null=True, blank=True)
+    llm_algo_used = models.TextField(null=True, blank=True)
     embedding_context = models.JSONField(null=True, blank=True)
+    file_uploaded = models.ForeignKey(
+        NoteFileembedding, on_delete=models.CASCADE, null=True, blank=True
+    )
+    the_file = models.BinaryField(null=True, blank=True)

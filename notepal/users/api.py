@@ -3,7 +3,11 @@ from django.contrib.auth.models import User
 from ninja.errors import HttpError
 from django.utils import timezone
 import re
-from users.login_schema import LoginSchema, login_validate_required_fields, login_validate
+from users.login_schema import (
+    LoginSchema,
+    login_validate_required_fields,
+    login_validate,
+)
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.hashers import check_password, make_password
@@ -15,7 +19,7 @@ class SignUp(Schema):
     email: str
     password: str
     repeat_password: str
-    
+
 
 @notepal_router.post("/login")
 def tic_login(request, login_details: LoginSchema = Form(...)):
@@ -39,12 +43,14 @@ def tic_login(request, login_details: LoginSchema = Form(...)):
     except User.DoesNotExist:
         error = {"Authentication error": "User does not exist"}
         raise HttpError(401, message=error)
-    
+
+
 @notepal_router.get("/logout")
 def tic_logout(request):
     logout(request)
     return "Logged out"
-    
+
+
 @notepal_router.post("/signup")
 def signup(request, signup_details: SignUp = Form(...)):
     if not signup_validate_required_fields(signup_details):
@@ -55,6 +61,7 @@ def signup(request, signup_details: SignUp = Form(...)):
     email = signup_details.email
     hashed_password = make_password(password)
     user = User(
+        username=email,
         email=email,
         password=hashed_password,
         last_login=timezone.now(),
@@ -76,16 +83,19 @@ def signup_validate_required_fields(data):
         raise HttpError(422, message=errors)
     return True
 
+
 def validate_signup_details(signup_details):
     errors = {}
-    if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', signup_details.email):
+    if not re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", signup_details.email):
         errors["email"] = "Invalid email address"
     if User.objects.filter(email=signup_details.email).exists():
         errors["email"] = "Email is already in use"
     if signup_details.password != signup_details.repeat_password:
-        errors['password'] = "Passwords do not match"
-    if len(signup_details.password)<8:
-        errors['password'] = "Password is too short. It must be at least 8 characters long"
+        errors["password"] = "Passwords do not match"
+    if len(signup_details.password) < 8:
+        errors[
+            "password"
+        ] = "Password is too short. It must be at least 8 characters long"
     if errors:
         raise HttpError(422, message=errors)
     return True

@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class SignupTestCase(TestCase):
     def setUp(self):
         pass
-    
+
     # signup sucessful
     def test_successful_signup(self):
         signup_data = {
@@ -18,7 +18,6 @@ class SignupTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.first().email, "john@example.com")
-        
 
     # missing fields - backend
     def test_invalid_signup_missing_fields(self):
@@ -29,7 +28,12 @@ class SignupTestCase(TestCase):
         }
         response = self.client.post(reverse("api-1.0.0:signup"), signup_data)
         self.assertEqual(response.status_code, 422)
-        self.assertEqual(response.json(), {'detail': "{'email': 'Email is required', 'password': 'Password is required', 'repeat_password': 'Repeat password is required'}"})
+        self.assertEqual(
+            response.json(),
+            {
+                "detail": "{'email': 'Email is required', 'password': 'Password is required', 'repeat_password': 'Repeat password is required'}"
+            },
+        )
         self.assertEqual(User.objects.count(), 0)
 
     # password mismatch - backend
@@ -41,9 +45,11 @@ class SignupTestCase(TestCase):
         }
         response = self.client.post(reverse("api-1.0.0:signup"), signup_data)
         self.assertEqual(response.status_code, 422)
-        self.assertEqual(response.json(), {'detail': "{'password': 'Passwords do not match'}"})
+        self.assertEqual(
+            response.json(), {"detail": "{'password': 'Passwords do not match'}"}
+        )
         self.assertEqual(User.objects.count(), 0)
-        
+
     # invalid email - backend
     def test_invalid_signup_email(self):
         signup_data = {
@@ -53,7 +59,9 @@ class SignupTestCase(TestCase):
         }
         response = self.client.post(reverse("api-1.0.0:signup"), signup_data)
         self.assertEqual(response.status_code, 422)
-        self.assertEqual(response.json(), {'detail': "{'email': 'Invalid email address'}"})
+        self.assertEqual(
+            response.json(), {"detail": "{'email': 'Invalid email address'}"}
+        )
         self.assertEqual(User.objects.count(), 0)
 
     # email already exists - backend
@@ -69,7 +77,9 @@ class SignupTestCase(TestCase):
 
         response = self.client.post(reverse("api-1.0.0:signup"), signup_data)
         self.assertEqual(response.status_code, 422)
-        self.assertEqual(response.json(), {'detail': "{'email': 'Email is already in use'}"})
+        self.assertEqual(
+            response.json(), {"detail": "{'email': 'Email is already in use'}"}
+        )
         self.assertEqual(User.objects.count(), 1)
 
     # check that strong password is enforced
@@ -81,7 +91,12 @@ class SignupTestCase(TestCase):
         }
         response = self.client.post(reverse("api-1.0.0:signup"), short_password_data)
         self.assertEqual(response.status_code, 422)
-        self.assertEqual(response.json(), {'detail': "{'password': 'Password is too short. It must be at least 8 characters long'}"})
+        self.assertEqual(
+            response.json(),
+            {
+                "detail": "{'password': 'Password is too short. It must be at least 8 characters long'}"
+            },
+        )
         self.assertEqual(User.objects.count(), 0)
 
         long_password_data = {
@@ -94,5 +109,3 @@ class SignupTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.first().email, "long@example.com")
-
-
