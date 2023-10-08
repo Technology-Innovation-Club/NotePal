@@ -11,7 +11,7 @@ class NotepalUser(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="notepaluser"
     )
-    api_key = encrypt(models.CharField(max_length=255, default=uuid.uuid4))
+    api_key = encrypt(models.CharField(max_length=255, default=""))
     created_ts = models.DateTimeField(auto_now_add=True)
     updated_ts = models.DateTimeField(auto_now=True)
     # objects = UserManager()
