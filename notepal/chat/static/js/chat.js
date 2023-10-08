@@ -35,17 +35,7 @@ async function sendQuestion(query) {
     const response = await axios.post('/api/chat/query', queryData, { headers });
     const data = response.data;
 
-     // Check if the response is a quiz (assumed to be JSON)
-     if (isJSON(data)) {
-      // If it's a quiz, send it to the quiz-data endpoint
-      const quiz_response = await axios.post('/api/chat/quiz-data', data, { headers });
-      const quiz_file = quiz_response.data
-
-      const uploadedQuizBubble = ShowUploadedPDFFileBubble(quiz_file)
-
-      // Append the chat bubble to the chat list
-      chatList.appendChild(uploadedQuizBubble)
-    } else {
+    
           // Create chat bubble for answer
       const answerBubble = document.createElement('li');
       answerBubble.innerHTML = `
@@ -85,7 +75,7 @@ async function sendQuestion(query) {
 
       chatList.appendChild(answerBubble);
 
-    }
+  
 
   } catch (error) {
     console.error('Error sending question:', error);
@@ -237,51 +227,8 @@ function createUploadedFileBubble(file) {
 }
 
 
-function isJSON(data) {
-  try {
-    JSON.parse(data);
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
 
-// To show the uploaded PDF
-function ShowUploadedPDFFileBubble(fileUrl) {
-  const uploadedFileBubble = document.createElement('li');
-  uploadedFileBubble.innerHTML = `
-    <!-- Chat Bubble -->
-    <div class="max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto">
-      <div class="max-w-2xl flex gap-x-2 sm:gap-x-4">
-        <span class="flex-shrink-0 inline-flex items-center justify-center h-[2.375rem] w-[2.375rem] rounded-full bg-gray-600">
-          <span class="text-sm font-medium text-white leading-none">N</span>
-        </span>
 
-        <div class="grow mt-2 space-y-3">
-          <p class="text-gray-800 dark:text-gray-200">New file uploaded</p>
-          <ul class="flex flex-col justify-end text-start -space-y-px">
-                <li class="flex items-center gap-x-2 p-3 text-sm bg-white border text-gray-800 first:rounded-t-lg first:mt-0 last:rounded-b-lg dark:bg-slate-900 dark:border-gray-700 dark:text-gray-200">
-                  <div class="w-full flex justify-between truncate">
-                    <span class="mr-3 flex-1 w-0 truncate">
-                    Quiz data
-                    </span>
-                    <a class="flex items-center gap-x-2 text-gray-500 hover:text-blue-500 whitespace-nowrap" href="${fileUrl}" download="quiz_data.zip">
-                      <svg class="flex-shrink-0 w-3 h-3" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                      </svg>
-                      Download
-                    </a>
-                  </div>
-                </li>
-              </ul>
-        </div>
-      </div>
-    </div>
-    <!-- End Chat Bubble -->
-  `;
-  return uploadedFileBubble;
-}
 
 function removeFileExtension(fileName) {
   // Split the file name by dot (.)

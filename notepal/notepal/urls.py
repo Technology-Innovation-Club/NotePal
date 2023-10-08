@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.decorators.csrf import get_token
-from chat.views import download_file
 from .api import api
 
 urlpatterns = [
@@ -26,5 +25,4 @@ urlpatterns = [
     path("chat/", include("chat.urls")),
     path("dev/csrf-token/", get_token, name="api-csrf-token"),
     path("__reload__/", include("django_browser_reload.urls")),
-    path('download/<uuid:history_id>/', download_file, name='download_file'),
 ]

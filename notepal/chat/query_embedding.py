@@ -5,26 +5,27 @@ import tiktoken
 from pgvector.django import CosineDistance
 from note.load_file import get_vector
 from chat.models import NoteEmbedding
-from chat.quiz import quiz_notify
-import json
+# from chat.quiz import quiz_notify
+# import json
 import os
 from users.models import NotepalUser
+# from note.load_file import process_quiz_data
 
 
 # system with quiz
-SYSTEM_CONTENT = """
-you are a students assistant.
-Use the current reference document to improve the current response to the users question. The output should be a response that is easy for the student to understand.
-Always show your answer in markdown format to boost the students understanding of the response, it should also be appropriately structured and spaced. The response should also be to the point and not contain unnecessary information.
-Ignore the context document and do not reference it in your response if it does not apply to the question.
-ALWAYS use the functions to find a function to trigger quizzes when a user asks for a quiz, test, questions or any form test of knowledge in anyway manner it is asked.
-"""
 # SYSTEM_CONTENT = """
-# you are a students assistant. 
-# Use the current reference document to improve the current response to the users question. The output should be a response that is easy for the student to understand. 
+# you are a students assistant.
+# Use the current reference document to improve the current response to the users question. The output should be a response that is easy for the student to understand.
 # Always show your answer in markdown format to boost the students understanding of the response, it should also be appropriately structured and spaced. The response should also be to the point and not contain unnecessary information.
-# Ignore the context document and do not reference it in your response if it does not apply to the question.  
+# Ignore the context document and do not reference it in your response if it does not apply to the question.
+# ALWAYS use the functions to find a function to trigger quizzes when a user asks for a quiz, test, questions or any form test of knowledge in anyway manner it is asked.
 # """
+SYSTEM_CONTENT = """
+you are a students assistant. 
+Use the current reference document to improve the current response to the users question. The output should be a response that is easy for the student to understand. 
+Always show your answer in markdown format to boost the students understanding of the response, it should also be appropriately structured and spaced. The response should also be to the point and not contain unnecessary information.
+Ignore the context document and do not reference it in your response if it does not apply to the question.  
+"""
 
 
 def get_api_key(user):
@@ -69,22 +70,22 @@ def num_tokens_from_messages(messages, model="gpt-3.5-turbo"):
     return num_tokens
 
 
-functions = [
-    {
-        "name": "quiz_notify",
-        "description": "Useful for outputting a quiz to the user.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "user_message": {
-                    "type": "string",
-                    "description": "The users question",
-                },
-            },
-            "required": ["user_message"],
-        },
-    }
-]
+# functions = [
+#     {
+#         "name": "quiz_notify",
+#         "description": "Useful for outputting a quiz to the user.",
+#         "parameters": {
+#             "type": "object",
+#             "properties": {
+#                 "user_message": {
+#                     "type": "string",
+#                     "description": "The users question",
+#                 },
+#             },
+#             "required": ["user_message"],
+#         },
+#     }
+# ]
 
 
 def get_completion_stuff(user, msgs, model="gpt-3.5-turbo", temperature=0.7):
@@ -93,8 +94,8 @@ def get_completion_stuff(user, msgs, model="gpt-3.5-turbo", temperature=0.7):
         model=model,
         messages=msgs,
         temperature=temperature,
-        functions=functions,
-        function_call="auto",  # auto is default, but we'll be explicit
+        # functions=functions,
+        # function_call="auto",  # auto is default, but we'll be explicit
     )
     # print(f"The number of items in messages: {len(msgs)}")
     # print(f"The tokens: {num_tokens_from_messages(msgs)}")
@@ -145,45 +146,46 @@ def ask_question_stuff(user, query):
     )
     response = get_completion_stuff(user, context)
     response_message = response["choices"][0]["message"]
-    if response_message.get("function_call"):
-        available_functions = {
-            "quiz_notify": quiz_notify,
-        }
-        function_name = response_message["function_call"]["name"]
-        function_to_call = available_functions[function_name]
-        function_args = json.loads(response_message["function_call"]["arguments"])
-        function_response = function_to_call(
-            user_message=function_args["user_message"],
-        )
-        # context.append(response_message)
-        context.append(
-            {
-                "role": "function",
-                "name": function_name,
-                "content": str(function_response),
-            }
-        )
-        # second_response = openai.ChatCompletion.create(
-        #     model="gpt-3.5-turbo",
-        #     messages=context,
-        # )
-        response = function_response
-        print(f"function response: {response.choices[0].message['content']}")
+    # if response_message.get("function_call"):
+    #     available_functions = {
+    #         "quiz_notify": quiz_notify,
+    #     }
+    #     function_name = response_message["function_call"]["name"]
+    #     function_to_call = available_functions[function_name]
+    #     function_args = json.loads(response_message["function_call"]["arguments"])
+    #     function_response = function_to_call(
+    #         user_message=function_args["user_message"],
+    #     )
+    #     # context.append(response_message)
+    #     context.append(
+    #         {
+    #             "role": "function",
+    #             "name": function_name,
+    #             "content": str(function_response),
+    #         }
+    #     )
+    #     # second_response = openai.ChatCompletion.create(
+    #     #     model="gpt-3.5-turbo",
+    #     #     messages=context,
+    #     # )
+    #     response = function_response
+    #     print(f"function response: {response.choices[0].message['content']}")
 
-        update_db["response"] = response.choices[0].message["content"]
-        # change to JSON
-        update_db["response_to_user"] = json.loads(response.choices[0].message["content"])
-        context.append(
-            {"role": "assistant", "content": response.choices[0].message["content"]}
-        )
-        # only set in multiples of 2
-        # if len(context) > 10:
-        #     context.pop()
-        #     context.pop()
-        if num_tokens_from_messages(context) > 4000:
-            context.pop()
-            context.pop()
-        return update_db
+    #     update_db["response"] = response.choices[0].message["content"]
+    #     # change to JSON
+    #     temp_json_data = json.loads(response.choices[0].message["content"])
+    #     update_db["response_to_user"] = process_quiz_data(user, temp_json_data)
+    #     context.append(
+    #         {"role": "assistant", "content": response.choices[0].message["content"]}
+    #     )
+    #     # only set in multiples of 2
+    #     # if len(context) > 10:
+    #     #     context.pop()
+    #     #     context.pop()
+    #     if num_tokens_from_messages(context) > 4000:
+    #         context.pop()
+    #         context.pop()
+    #     return update_db
 
     update_db["response"] = response.choices[0].message["content"]
     # change to JSON
