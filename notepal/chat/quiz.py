@@ -30,10 +30,7 @@ def quiz_notify(user_message: str):
             "role": "system",
             "content": QUIZ,
         },
-        {
-            "role": "user",
-            "content": user_message
-        },
+        {"role": "user", "content": user_message},
     ]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",

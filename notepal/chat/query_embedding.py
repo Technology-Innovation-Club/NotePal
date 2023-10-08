@@ -5,10 +5,12 @@ import tiktoken
 from pgvector.django import CosineDistance
 from note.load_file import get_vector
 from chat.models import NoteEmbedding
+
 # from chat.quiz import quiz_notify
 # import json
 import os
 from users.models import NotepalUser
+
 # from note.load_file import process_quiz_data
 
 

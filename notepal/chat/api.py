@@ -7,13 +7,11 @@ from ninja.security import django_auth
 from ninja.errors import HttpError
 
 
-
 chat_router = Router()
 
 
 class questionSchema(Schema):
     query: str
-
 
 
 # query chatbot
@@ -59,6 +57,3 @@ def query(request, queryDetails: questionSchema = Form(...)):
         error = {}
         error["error"] = "User not authenticated"
         raise HttpError(401, message=error)
-
-
-

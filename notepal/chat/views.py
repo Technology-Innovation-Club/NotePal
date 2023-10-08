@@ -29,4 +29,3 @@ def chat(request):
     }
 
     return render(request, "chat.html", context)
-
