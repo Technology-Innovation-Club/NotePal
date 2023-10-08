@@ -1,47 +1,42 @@
-const questionTextarea = document.querySelector('#question-area');
-var chatList = document.querySelector('#chat-list');
-const sendButton = document.querySelector('#send-button');
-const loadingSpinner = document.querySelector('#send-loading');
-const uploadButton = document.getElementById('upload-button');
-const spinningElement = document.querySelector('.animate-spin');
-const alertWrongFile = document.getElementById('alertWrongFile');
-const alertExistingFile = document.getElementById('alertExistingFile');
-const alertEmptyFile = document.getElementById('alertEmptyFile');
-const fileInput = document.getElementById('file-input');
+const questionTextarea = document.querySelector("#question-area");
+var chatList = document.querySelector("#chat-list");
+const sendButton = document.querySelector("#send-button");
+const loadingSpinner = document.querySelector("#send-loading");
+const uploadButton = document.getElementById("upload-button");
+const spinningElement = document.querySelector(".animate-spin");
+const alertWrongFile = document.getElementById("alertWrongFile");
+const alertExistingFile = document.getElementById("alertExistingFile");
+const alertEmptyFile = document.getElementById("alertEmptyFile");
+const fileInput = document.getElementById("file-input");
 // CHAT HANDLING
-
-
 
 function convertMarkdown(content) {
   var converter = new showdown.Converter();
   var html = converter.makeHtml(content);
   console.log(html);
-  
+
   return html;
 }
 
-
-
-
-
 // Function to send a question and update the chat list
 async function sendQuestion(query) {
-  const csrftoken = getCookie('csrftoken'); 
+  const csrftoken = getCookie("csrftoken");
   const headers = {
-    'X-CSRFToken': csrftoken,
-    'Content-Type': 'application/x-www-form-urlencoded',
+    "X-CSRFToken": csrftoken,
+    "Content-Type": "application/x-www-form-urlencoded",
   };
   const queryData = {
     query,
   };
   try {
-    const response = await axios.post('/api/chat/query', queryData, { headers });
+    const response = await axios.post("/api/chat/query", queryData, {
+      headers,
+    });
     const data = response.data;
 
-    
-          // Create chat bubble for answer
-      const answerBubble = document.createElement('li');
-      answerBubble.innerHTML = `
+    // Create chat bubble for answer
+    const answerBubble = document.createElement("li");
+    answerBubble.innerHTML = `
         <!-- Chat Bubble -->
         <li class="max-w-4xl py-2 px-4 sm:px-6 lg:px-8 mx-auto flex gap-x-2 sm:gap-x-4">
           <svg class="flex-shrink-0 w-[2.375rem] h-[2.375rem] rounded-full" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +46,9 @@ async function sendQuestion(query) {
             <!-- Card -->
             <div class="space-y-3">
               <!-- Use the Typography classes here -->
-              <article class="prose sm:prose-base md:prose-lg lg:prose-xl prose-code:bg-black prose-em:font-semibold prose-slate dark:prose-invert prose-a:text-blue-600 prose-img:rounded-xl">${convertMarkdown(data)}</article>
+              <article class="prose sm:prose-base md:prose-lg lg:prose-xl prose-code:bg-black prose-em:font-semibold prose-slate dark:prose-invert prose-a:text-blue-600 prose-img:rounded-xl">${convertMarkdown(
+                data,
+              )}</article>
               <div class="space-y-1.5">
                 <!-- Other content if needed -->
               </div>
@@ -63,37 +60,33 @@ async function sendQuestion(query) {
         <!-- End Chat Bubble -->
       `;
 
-      chatList.appendChild(answerBubble);
-
-  
-
+    chatList.appendChild(answerBubble);
   } catch (error) {
-    console.error('Error sending question:', error);
+    console.error("Error sending question:", error);
   }
 }
 
-
 // Add an event listener for the Enter key and the button click
-questionTextarea.addEventListener('keydown', async (event) => {
-  if (event.key === 'Enter' && !event.shiftKey) {
+questionTextarea.addEventListener("keydown", async (event) => {
+  if (event.key === "Enter" && !event.shiftKey) {
     event.preventDefault();
     await submitQuestion();
   }
 });
 
-sendButton.addEventListener('click', async () => {
+sendButton.addEventListener("click", async () => {
   await submitQuestion();
 });
 
 // Function to submit the question
 async function submitQuestion() {
-  const question = document.getElementById('question-area').value;
-  console.log('the question is: '+question)
+  const question = document.getElementById("question-area").value;
+  console.log("the question is: " + question);
   if (question) {
-    questionTextarea.value = '';
-    loadingSpinner.classList.remove('hidden');
+    questionTextarea.value = "";
+    loadingSpinner.classList.remove("hidden");
     // Create chat bubble for question and display it immediately
-    const questionBubble = document.createElement('li');
+    const questionBubble = document.createElement("li");
     questionBubble.innerHTML = `
       <!-- Chat Bubble -->
       <div class="max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto">
@@ -120,94 +113,93 @@ async function submitQuestion() {
       await sendQuestion(question);
 
       // Remove the loading spinner (it should already be displayed)
-      loadingSpinner.classList.add('hidden');
+      loadingSpinner.classList.add("hidden");
 
       // Scroll to the latest question-answer pair
       // chatList.scrollTop = chatList.scrollHeight;
     } catch (error) {
-      console.error('Error sending question:', error);
+      console.error("Error sending question:", error);
       // Handle the error here, e.g., by displaying an error message to the user.
     }
   }
 }
 
 // FILE UPLOAD HANDLING
-fileInput.addEventListener('click', () => {
+fileInput.addEventListener("click", () => {
   // Clear the error message when the input is clicked
-  alertWrongFile.classList.add('hidden');
-  alertExistingFile.classList.add('hidden');
-  alertEmptyFile.classList.add('hidden');
+  alertWrongFile.classList.add("hidden");
+  alertExistingFile.classList.add("hidden");
+  alertEmptyFile.classList.add("hidden");
 });
 
-
-
-uploadButton.addEventListener('click', async () => {
+uploadButton.addEventListener("click", async () => {
   // Get the selected file from the file input
   // const fileInput = document.getElementById('file-input');
   const file = fileInput.files[0];
 
   //Check if a file has been selected
   if (!file) {
-    alertEmptyFile.classList.remove('hidden');
+    alertEmptyFile.classList.remove("hidden");
     return; // Abort the upload process
   }
-  
+
   const formData = new FormData();
-  formData.append('file', file);
-  
-  const csrftoken = getCookie('csrftoken'); 
+  formData.append("file", file);
+
+  const csrftoken = getCookie("csrftoken");
   const headers = {
-    'X-CSRFToken': csrftoken,
+    "X-CSRFToken": csrftoken,
   };
 
   try {
     // Show the spinning element while uploading
-    spinningElement.classList.remove('hidden');
-    
-    const response = await axios.post('/api/note/upload', formData, { headers });
+    spinningElement.classList.remove("hidden");
+
+    const response = await axios.post("/api/note/upload", formData, {
+      headers,
+    });
     console.log(response.data); // Handle success here
 
     // Hide the spinning element after upload is complete
-    spinningElement.classList.add('hidden');
+    spinningElement.classList.add("hidden");
 
     //Refresh page
-    window.location.href = "/chat"
+    window.location.href = "/chat";
     // Create a chat bubble for the uploaded file
     const uploadedFileBubble = createUploadedFileBubble(file);
 
     // Append the chat bubble to the chat list
     chatList.appendChild(uploadedFileBubble);
-    
+
     // Refresh the page when upload is successful
     // window.location.reload();
-    const closeButton = document.querySelector('.hs-dropdown-toggle'); // Select the button using its class
+    const closeButton = document.querySelector(".hs-dropdown-toggle"); // Select the button using its class
     // Trigger the click event on the button
     if (closeButton) {
       closeButton.click();
     }
   } catch (error) {
     console.error(error);
-    console.log("this is the error status: "+error.response.status);
+    console.log("this is the error status: " + error.response.status);
 
     if (error.response && error.response.status === 401) {
-        console.error('User not authenticated');
-        // Redirect the user to the login page
-        window.location.href = '/login'; 
+      console.error("User not authenticated");
+      // Redirect the user to the login page
+      window.location.href = "/login";
     } else if (error.response && error.response.status === 400) {
-        spinningElement.classList.add('hidden');
-        alertWrongFile.classList.remove('hidden');
-    }else if (error.response && error.response.status === 409) {
-      console.log('Displaying existing file alert');
-        spinningElement.classList.add('hidden');
-        alertExistingFile.classList.remove('hidden');
-        }
+      spinningElement.classList.add("hidden");
+      alertWrongFile.classList.remove("hidden");
+    } else if (error.response && error.response.status === 409) {
+      console.log("Displaying existing file alert");
+      spinningElement.classList.add("hidden");
+      alertExistingFile.classList.remove("hidden");
     }
-    // Handle other error cases here
   }
-);
+  // Handle other error cases here
+});
 
 function createUploadedFileBubble(file) {
-  const uploadedFileBubble = document.createElement('li');
+  const uploadedFileBubble = document.createElement("li");
   uploadedFileBubble.innerHTML = `
     <!-- Chat Bubble -->
     <div class="max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto">
@@ -235,37 +227,32 @@ function createUploadedFileBubble(file) {
   return uploadedFileBubble;
 }
 
-
-
-
-
 function removeFileExtension(fileName) {
   // Split the file name by dot (.)
-  const parts = fileName.split('.');
+  const parts = fileName.split(".");
 
   // Check if there's more than one part (i.e., there's an extension)
   if (parts.length > 1) {
     // Remove the last part (the extension) and join the remaining parts
-    return parts.slice(0, -1).join('.');
+    return parts.slice(0, -1).join(".");
   }
 
   // If there's no extension, return the original name
   return fileName;
 }
 
-
 // Function to get a cookie by name
 function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
     }
-    return cookieValue;
+  }
+  return cookieValue;
 }
