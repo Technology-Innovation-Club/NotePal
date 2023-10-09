@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django_cryptography.fields import encrypt
 import uuid
-
+from django.contrib.sessions.models import Session
 
 class NotepalUser(models.Model):
     id = models.UUIDField(
@@ -14,4 +14,7 @@ class NotepalUser(models.Model):
     api_key = encrypt(models.CharField(max_length=255, default=""))
     created_ts = models.DateTimeField(auto_now_add=True)
     updated_ts = models.DateTimeField(auto_now=True)
-    # objects = UserManager()
+    session_id = models.ForeignKey(Session, on_delete=models.CASCADE, null=True)
+    
+
+

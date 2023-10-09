@@ -11,7 +11,7 @@ from users.login_schema import (
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.hashers import check_password, make_password
-
+from django.http import HttpResponse
 notepal_router = Router()
 
 
@@ -19,6 +19,8 @@ class SignUp(Schema):
     email: str
     password: str
     repeat_password: str
+
+
 
 
 @notepal_router.post("/login")
@@ -43,12 +45,6 @@ def tic_login(request, login_details: LoginSchema = Form(...)):
     except User.DoesNotExist:
         error = {"Authentication error": "User does not exist"}
         raise HttpError(401, message=error)
-
-
-@notepal_router.get("/logout")
-def tic_logout(request):
-    logout(request)
-    return "Logged out"
 
 
 @notepal_router.post("/signup")

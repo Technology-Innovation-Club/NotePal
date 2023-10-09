@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from chat.models import History
 from ninja.security import django_auth
 from ninja.errors import HttpError
+from django.contrib.sessions.models import Session
+from django.contrib.auth import logout
 
 
 chat_router = Router()
@@ -13,7 +15,7 @@ chat_router = Router()
 class questionSchema(Schema):
     query: str
 
-
+  
 # query chatbot
 @chat_router.post("/query", auth=django_auth)
 def query(request, queryDetails: questionSchema = Form(...)):

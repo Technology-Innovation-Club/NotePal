@@ -113,6 +113,9 @@ DATABASES = {
     }
 }
 
+COMMANDS = [
+    'delete_expired_users',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -145,6 +148,11 @@ USE_I18N = True
 USE_TZ = True
 
 
+# SESSION_EXPIRED_SIGNALS = [
+#     'path.to.receiver.delete_user_on_session_expiration',
+# ]
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -164,3 +172,4 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
