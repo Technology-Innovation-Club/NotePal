@@ -2,12 +2,12 @@ import re
 from ninja.files import UploadedFile
 from django.utils import timezone
 
-
+# Get the users file type
 def get_file_type(filename):
-    # Define a regular expression pattern to match filename and file type
+    
     pattern = r"^(.*)\.([a-zA-Z0-9]+)$"
 
-    # Use re.match() to find the match
+    
     match = re.match(pattern, filename)
 
     if match:
@@ -16,12 +16,12 @@ def get_file_type(filename):
     else:
         return None
 
-
+# Get the users filename
 def get_file_name(filename):
-    # Define a regular expression pattern to match filename and file type
+    
     pattern = r"^(.*)\.([a-zA-Z0-9]+)$"
 
-    # Use re.match() to find the match
+    
     match = re.match(pattern, filename)
 
     if match:
@@ -30,7 +30,7 @@ def get_file_name(filename):
     else:
         return None
 
-
+# Get the users metadata
 def get_metadata(file: UploadedFile):
     metadata = {}
     metadata["file_name"] = get_file_name(file.name)

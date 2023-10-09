@@ -13,7 +13,7 @@ class NoteEmbedding(models.Model):
     file_embedding = models.ForeignKey(NoteFileembedding, on_delete=models.CASCADE)
     vector = VectorField(dimensions=384, null=True)
 
-
+# Storing the users chat history
 class History(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, editable=False, primary_key=True

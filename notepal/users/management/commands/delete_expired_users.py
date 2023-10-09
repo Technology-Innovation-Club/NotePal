@@ -7,10 +7,6 @@ class Command(BaseCommand):
     help = 'Deletes every user in which their session has expired.'
 
     def handle(self, *args, **options):
-        """
-        Deletes every user in which their session has expired.
-        """
-
         # Get all expired sessions
         expired_sessions = Session.objects.filter(expire_date__lt=timezone.now())
 

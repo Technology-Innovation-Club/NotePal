@@ -1,6 +1,4 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-
-# from load_file import
 from note.models import NoteFileembedding
 from chat.models import NoteEmbedding
 from django.utils import timezone
@@ -18,17 +16,15 @@ from .handle_file import (
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, HttpResponse
 from chat.models import History
-from ninja.errors import HttpError
 import markdown
 from xhtml2pdf import pisa
 import tempfile
 import os
 import zipfile
-from ninja import Schema
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-
+# Specify chunking configuration
 def get_chunks(text):
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=100,
@@ -39,12 +35,12 @@ def get_chunks(text):
     split_texts = text_splitter.create_documents([text])
     return split_texts
 
-
+# Convert the text to a vector
 def get_vector(text) -> ndarray:
     vector = model.encode(text)
     return vector
 
-
+# Handle the files uploaded
 def handle_upload(file, file_type):
     if file_type == "pdf":
         pdf_reader = upload_pdf_file(file)
@@ -58,14 +54,14 @@ def handle_upload(file, file_type):
     else:
         return None
 
-
+# Read file from DB
 def read_file(file_embedding: NoteFileembedding):
     file = file_embedding.the_file
     file_decode = io.BytesIO(file)
     output_text = handle_upload(file_decode, file_embedding.metadata["file_type"])
     return output_text
 
-
+# Function to store users note
 def store_file(file, filename, metadata, email):
     owner = get_object_or_404(User, email=email)
     note_file = NoteFileembedding.objects.create(
@@ -82,12 +78,7 @@ def store_file(file, filename, metadata, email):
     return note_file
 
 
-def store_pdf_file_history(email, file):
-    owner = get_object_or_404(User, email=email)
-    store_pdf = History.objects.create(user_owner=owner, the_file=file)
-    return store_pdf
-
-
+# Function to Store chunked note
 def store_file_embedding(file_embedding):
     text = read_file(file_embedding)
     chunks = get_chunks(text)
@@ -102,86 +93,6 @@ def store_file_embedding(file_embedding):
         )
 
 
-#
 
 
-def process_quiz_data(user, quizDetails):
-    # Convert the quiz data to Markdown format
-    questions_markdown = "# Practice questions\n\n"
-    answers_markdown = "# Practice answers\n\n"
 
-    for i, question in enumerate(quizDetails.questions):
-        # Add the question number to the beginning of the question
-        questions_markdown += f"{i + 1}. {question}\n"
-
-        if quizDetails.type_of_question[i] == "objective":
-            # Add the answer options to the question
-            for option in quizDetails.options[i]:
-                questions_markdown += f"    * {option}\n"
-
-        # Add the answer to the answers Markdown file
-        answers_markdown += f"{i + 1}. {quizDetails.the_answer[i]}\n"
-
-    # Convert Markdown to HTML for questions
-    questions_html_content = markdown.markdown(questions_markdown)
-
-    # Convert Markdown to HTML for answers
-    answers_html_content = markdown.markdown(answers_markdown)
-
-    # Create a temporary file to write the questions PDF
-    temp_questions_file_path = tempfile.NamedTemporaryFile(
-        suffix=".pdf", delete=True
-    ).name
-
-    result_questions_file = open(temp_questions_file_path, "w+b")
-
-    # convert questions HTML to PDF
-    pisa.CreatePDF(
-        questions_html_content,
-        dest=result_questions_file,
-    )
-
-    result_questions_file.close()
-
-    # Create a temporary file to write the answers PDF
-    temp_answers_file_path = tempfile.NamedTemporaryFile(
-        suffix=".pdf", delete=True
-    ).name
-
-    result_answers_file = open(temp_answers_file_path, "w+b")
-
-    # convert answers HTML to PDF
-    pisa.CreatePDF(
-        answers_html_content,
-        dest=result_answers_file,
-    )
-
-    result_answers_file.close()
-
-    # Open the temporary files in binary mode and read the bytes
-    with open(temp_questions_file_path, "rb") as f_questions, open(
-        temp_answers_file_path, "rb"
-    ) as f_answers:
-        questions_pdf_bytes = f_questions.read()
-        answers_pdf_bytes = f_answers.read()
-
-    # Combine both PDFs into a single binary file
-    combined_pdf_bytes = questions_pdf_bytes + answers_pdf_bytes
-
-    # store file in chat history
-    store_pdf_file_history(user.email, combined_pdf_bytes)
-
-    # Delete the temporary files
-    os.remove(temp_questions_file_path)
-    os.remove(temp_answers_file_path)
-
-    # Create a ZIP archive containing both PDFs
-    response = HttpResponse(content_type="application/zip")
-    response["Content-Disposition"] = "attachment; filename=quiz_data.zip"
-
-    # Create a ZIP file in memory
-    with zipfile.ZipFile(response, "w", zipfile.ZIP_DEFLATED) as zipf:
-        zipf.writestr("questions.pdf", questions_pdf_bytes)
-        zipf.writestr("answers.pdf", answers_pdf_bytes)
-
-    return response

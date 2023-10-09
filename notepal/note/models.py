@@ -16,6 +16,3 @@ class NoteFileembedding(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, default="")
 
 
-# Table to store the embeddings of the users note
-# add user later
-# file_owner = models.ForeignKey(User, on_delete=models.CASCADE, default='')

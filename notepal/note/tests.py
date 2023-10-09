@@ -157,6 +157,3 @@ class UploadTestCase(TestCase):
         # Log out the user
         self.client.logout()
 
-
-# POSSIBLE ADDITION
-# Test for uploading a file with a name that is too long

@@ -21,7 +21,7 @@ class ApiKeySchema(Schema):
     api_key: str
 
 
-# upload a file
+# Endpoint to upload a file
 @note_router.post("/upload", auth=django_auth)
 def file_upload(request, file: UploadedFile = File(...)):
     if request.user.is_authenticated:
@@ -48,7 +48,7 @@ def file_upload(request, file: UploadedFile = File(...)):
         error["error"] = "User not authenticated"
         raise HttpError(401, message=error)
 
-
+# Endpoint to add users OpenAI key
 @note_router.post("/add-api-key", auth=django_auth)
 def add_api_key(request, APIKEY: ApiKeySchema = Form(...)):
     owner = get_object_or_404(User, email=request.user.email)
@@ -69,22 +69,6 @@ def add_api_key(request, APIKEY: ApiKeySchema = Form(...)):
         notepal_user.save()
 
         return {"message": "API key added successfully"}
-    else:
-        error = {}
-        error["error"] = "User not authenticated"
-        raise HttpError(401, message=error)
-
-
-@note_router.get("/view-api-key", auth=django_auth)
-def view_api_key(request):
-    owner = get_object_or_404(User, email=request.user.email)
-    if request.user.is_authenticated:
-        try:
-            notepal_user = get_object_or_404(NotepalUser, user=owner)
-            api_key = notepal_user.api_key
-            return {"api_key": api_key}
-        except NotepalUser.DoesNotExist:
-            return {"message": "NotepalUser does not exist"}
     else:
         error = {}
         error["error"] = "User not authenticated"

@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 
 
-# validate file upload
+# validate file uploaded
 def validate_uploaded_file(file, user):
     error = {}
     owner = get_object_or_404(User, email=user)

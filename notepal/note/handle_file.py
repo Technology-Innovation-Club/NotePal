@@ -3,7 +3,7 @@ import docx
 from pptx import Presentation
 import re
 
-
+# Clean the text
 def clean_and_convert_to_utf8(text):
     # Remove any non-ASCII characters and unnecessary whitespaces
     cleaned_text = " ".join(text.split())
@@ -14,13 +14,13 @@ def clean_and_convert_to_utf8(text):
     return utf8_text
 
 
-# upload DOCX file
+# Upload DOCX file
 def upload_docx_file(docx_file):
     docx_reader = docx.Document(docx_file)
     return docx_reader
 
 
-# get text from DOCX file
+# Get text from DOCX file
 def get_docx_text(docx_reader):
     fullText = []
     for para in docx_reader.paragraphs:
@@ -56,13 +56,13 @@ def get_pptx_text(prs):
     return pptx_cleaned_text
 
 
-# upload PDF file
+# Upload PDF file
 def upload_pdf_file(pdf_file):
     pdf_reader = PdfReader(pdf_file)
     return pdf_reader
 
 
-# get text from PDF file
+# Get text from PDF file
 def get_pdf_text(pdf_reader):
     render_page = pdf_reader.pages
     len_reader = len(render_page)

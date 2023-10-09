@@ -1,12 +1,10 @@
-from ninja import Router, File, Schema, Form
+from ninja import Router, Schema, Form
 from chat.query_embedding import ask_question_stuff
-from django.shortcuts import get_object_or_404, HttpResponse
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from chat.models import History
 from ninja.security import django_auth
 from ninja.errors import HttpError
-from django.contrib.sessions.models import Session
-from django.contrib.auth import logout
 
 
 chat_router = Router()
@@ -15,8 +13,8 @@ chat_router = Router()
 class questionSchema(Schema):
     query: str
 
-  
-# query chatbot
+
+# Endpoint to process users query
 @chat_router.post("/query", auth=django_auth)
 def query(request, queryDetails: questionSchema = Form(...)):
     if request.user.is_authenticated:
