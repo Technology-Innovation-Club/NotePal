@@ -3,7 +3,7 @@
 
 This tool provides an easy way for users to interact with and source through their notes.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Join our Discord community](https://img.shields.io/discord/your-discord-server-id?color=%237289DA&label=Join%20Our%20Discord&logo=discord&logoColor=white)](https://discord.gg/SXMJnQaY) [![LangChain Applications](https://img.shields.io/badge/LangChain%20Applications-0.0.238-black)](https://example.com/langchain-applications/) [![OpenAI Requests](https://img.shields.io/badge/OpenAI%20-0.27.8-yellow)](https://example.com/openai-requests/) [![Django](https://img.shields.io/badge/Django-4.1.7-purple)](https://www.djangoproject.com/) [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.6.0-blue)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Join our Discord community](https://img.shields.io/discord/1111281482514833449?color=%237289DA&label=Join%20Our%20Discord&logo=discord&logoColor=white)](https://discord.gg/SXMJnQaY) [![LangChain Applications](https://img.shields.io/badge/LangChain%20Applications-0.0.238-black)](https://example.com/langchain-applications/) [![OpenAI Requests](https://img.shields.io/badge/OpenAI%20-0.27.8-yellow)](https://example.com/openai-requests/) [![Django](https://img.shields.io/badge/Django-4.1.7-purple)](https://www.djangoproject.com/) [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.6.0-blue)](https://tailwindcss.com/)
 
 ## Demo
 
