@@ -1,20 +1,26 @@
-# NotePal
-NotePal is a web app that allows students to interact with a chatbot referencing their notes. It uses the OpenAI CHATGPT API to power a chatbot that can answer questions, generate text and quizzes.
+
+# Notepal
+
+This tool provides an easy way for users to interact with and source through their notes.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Join our Discord community](https://img.shields.io/discord/your-discord-server-id?color=%237289DA&label=Join%20Our%20Discord&logo=discord&logoColor=white)](https://discord.gg/SXMJnQaY) [![LangChain Applications](https://img.shields.io/badge/LangChain%20Applications-0.0.238-black)](https://example.com/langchain-applications/) [![OpenAI Requests](https://img.shields.io/badge/OpenAI%20-0.27.8-yellow)](https://example.com/openai-requests/) [![Django](https://img.shields.io/badge/Django-4.1.7-purple)](https://www.djangoproject.com/) [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.6.0-blue)](https://tailwindcss.com/)
+
+## Demo
+
+Insert gif or link to demo
+
+## Installation steps
+
 ### Prerequisites
-
-Before you begin, make sure you have the following installed on your system:
-
 - Docker: [Install Docker](https://docs.docker.com/get-docker/)
 - Docker Compose: [Install Docker Compose](https://docs.docker.com/compose/install/)
 
-Pull the docker image:
+Pull the docker [pgvector](https://github.com/pgvector/pgvector#docker) image:
 ```bash
 docker pull ankane/pgvector
 ```
-for more information
-- https://github.com/pgvector/pgvector#docker
-## Local Setup
-### Getting Started
+
+### Local Setup
 
 **Clone the Repository:**
    
@@ -27,12 +33,13 @@ Clone the Notepal project repository from the source:
 
 **Create a virtual environment:**
 
-```code
+```bash
 python3 -m venv env
 ```
+Create a Postgres database in the pgvector docker container
 
-Adding the folowing to your `env/bin/activate` file:
-```bash
+**Adding the Postgres database details to your `env/bin/activate` file**:
+```code
 export TIC_DB_NAME=[your local db name]
 export TIC_DB_USER=[your local db user]
 export TIC_DB_PASSWORD=[your local db password]
@@ -41,23 +48,36 @@ export TIC_DB_PORT=5433
 export DEPLOYMENT_TIER=dev
 ```
 
-The Database name, user, and password should be the same as your local postgres database that you have created for the project.
+**Install of the requirements**
+```bash
+pip install -r requirements.txt
+```
 
+**Migrate all the tables**:
 
-Run a migration to create the tables:
-
-```code
+```bash
 python manage.py migrate
 ```
 
-Create an admin user:
+**Run the application**:
 
-```code
-echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', '', 'ticadmin101')" | python manage.py shell
+```bash
+python manage.py runserver
 ```
 
-Run the application:
+## Running tailwind
+### Prerequisites
+NPM: [Nodejs](https://nodejs.org/en)
+
+### Local Setup
+Go to settings an specify the path npm on your machine or run `which npm` in your console.
+
+Specify the path in `settings.py`
 
 ```code
-python manage.py runserver
+NPM_BIN_PATH = <path-to-npm>
+```
+Run
+```bash
+python manage.py tailwind start
 ```
