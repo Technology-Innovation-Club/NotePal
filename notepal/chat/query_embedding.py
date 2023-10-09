@@ -109,7 +109,6 @@ def ask_question_stuff(user, query):
 
     update_db["response"] = response.choices[0].message["content"]
     update_db["response_to_user"] = response.choices[0].message["content"]
-    print(f"response: {response.choices[0].message['content']}")
     context.append(
         {"role": "assistant", "content": response.choices[0].message["content"]}
     )

@@ -104,7 +104,7 @@
       
       <div class="mt-auto mb-4">
         <div class="py-2.5 px-7">
-          <a class="inline-flex items-center gap-x-2 text-xs text-gray-300 dark:hover:text-green-600" href="javascript:;" data-hs-overlay="#hs-small-modal">
+          <a class="openai-button-onstart inline-flex items-center gap-x-2 text-xs text-gray-300 dark:hover:text-green-600" href="javascript:;" data-hs-overlay="#hs-small-modal">
             <span class="block w-1.5 h-1.5 rounded-full bg-green-600"></span>
             OpenAI API KEY
           </a>
@@ -221,6 +221,22 @@
 
   <!-- End Search -->
   <!-- JS Implementing Plugins -->
+  <script>
+if (!localStorage.getItem('apiKeyButtonClicked')) {
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const apiKeyButton = document.querySelector('.openai-button-onstart');
+    
+    if (apiKeyButton) {
+
+      apiKeyButton.click();
+      
+      
+      localStorage.setItem('apiKeyButtonClicked', 'true');
+    }
+  });
+}
+  </script>
   <script src="{% static 'js/api-key-form.js' %}"></script>
   <script src="{% static 'js/chat-interactions.js' %}"></script>
   <script src="{% static 'node_modules/preline/dist/preline.js' %}"></script>

@@ -63,6 +63,34 @@ async function sendQuestion(query) {
     chatList.appendChild(answerBubble);
   } catch (error) {
     console.error("Error sending question:", error);
+
+    if (error.response && error.response.status === 500) {
+      const answerBubble = document.createElement("li");
+      answerBubble.innerHTML = `
+          <!-- Chat Bubble -->
+          <li class="max-w-4xl py-2 px-4 sm:px-6 lg:px-8 mx-auto flex gap-x-2 sm:gap-x-4">
+            <svg class="flex-shrink-0 w-[2.375rem] h-[2.375rem] rounded-full" width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- SVG paths for the chat bubble -->
+            </svg>
+            <div class="grow max-w-[90%] md:max-w-2xl w-full space-y-3">
+              <!-- Card -->
+              <div class="space-y-3">
+                <!-- Use the Typography classes here -->
+                <article class="prose sm:prose-base md:prose-lg lg:prose-xl prose-code:bg-black prose-em:font-semibold prose-slate dark:prose-invert prose:text-red-400 prose-a:text-blue-600 prose-img:rounded-xl">Oops! An error has occurred. It seems there might be an issue with your OpenAI integration. Please check if you have uploaded your OpenAI API key, and try again. </article>
+                <div class="space-y-1.5">
+                  <!-- Other content if needed -->
+                </div>
+              </div>
+              <!-- End Card -->
+              
+            </div>
+          </li>
+          <!-- End Chat Bubble -->
+        `;
+  
+      chatList.appendChild(answerBubble);
+
+    }
   }
 }
 
@@ -180,7 +208,6 @@ uploadButton.addEventListener("click", async () => {
     }
   } catch (error) {
     console.error(error);
-    console.log("this is the error status: " + error.response.status);
 
     if (error.response && error.response.status === 401) {
       console.error("User not authenticated");

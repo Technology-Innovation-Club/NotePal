@@ -22,7 +22,7 @@ import tempfile
 import os
 import zipfile
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
 
 # Specify chunking configuration
 def get_chunks(text):
