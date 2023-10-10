@@ -25,7 +25,7 @@ Clone the Notepal project repository from the source:
 
    ```bash
    git clone https://github.com/Technology-Innovation-Club/NotePal.git
-   cd NotePal/notepal
+   cd NotePal
 ```
 
 **Create a virtual environment:**
