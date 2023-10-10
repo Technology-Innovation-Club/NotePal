@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
-import django_heroku
 
 PORT = os.environ.get("PORT", 6000)
 
@@ -177,4 +176,3 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-django_heroku.settings(locals())
