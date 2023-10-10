@@ -10,37 +10,41 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+from dotenv import load_dotenv
+import dj_database_url
+
 
 PORT = os.environ.get("PORT", 6000)
 
-DB_NAME = os.getenv("TIC_DB_NAME")
-DB_USER = os.getenv("TIC_DB_USER")
-DB_PASSWORD = os.getenv("TIC_DB_PASSWORD")
-DB_HOST = os.getenv("TIC_DB_HOST")
-DB_PORT = os.getenv("TIC_DB_PORT")
+# DB_NAME = os.getenv("TIC_DB_NAME")
+# DB_USER = os.getenv("TIC_DB_USER")
+# DB_PASSWORD = os.getenv("TIC_DB_PASSWORD")
+# DB_HOST = os.getenv("TIC_DB_HOST")
+# DB_PORT = os.getenv("TIC_DB_PORT")
 
-if None in (DB_HOST, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT):
-    raise Exception(
-        "Environment vars needed. TIC_DB_NAME, TIC_DB_USER, TIC_DB_PASSWORD, TIC_DB_HOST, TIC_DB_PORT"
-    )
+# if None in (DB_HOST, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT):
+#     raise Exception(
+#         "Environment vars needed. TIC_DB_NAME, TIC_DB_USER, TIC_DB_PASSWORD, TIC_DB_HOST, TIC_DB_PORT"
+#     )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-66h)4&0g^$t*t*fwko+v^#ip2f#6+4g=3k8d^z0(r9qem4@qye"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
 
 
 # Application definition
@@ -102,15 +106,19 @@ WSGI_APPLICATION = "notepal.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": DB_NAME,
-        "USER": DB_USER,
-        "PASSWORD": DB_PASSWORD,
-        "HOST": DB_HOST,
-        "PORT": DB_PORT,
-    }
+    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": DB_NAME,
+#         "USER": DB_USER,
+#         "PASSWORD": DB_PASSWORD,
+#         "HOST": DB_HOST,
+#         "PORT": DB_PORT,
+#     }
+# }
 
 COMMANDS = [
     'delete_expired_users',
