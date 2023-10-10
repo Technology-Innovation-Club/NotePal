@@ -58,7 +58,7 @@ fonttools
 frozenlist
 fsspec
 greenlet
-python3-gunicorn
+gunicorn
 html5lib
 huggingface-hub
 idna
