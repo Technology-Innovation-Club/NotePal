@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
-
+import django_heroku
 
 PORT = os.environ.get("PORT", 6000)
 
@@ -156,6 +156,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+
+
+
 STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
@@ -165,6 +168,7 @@ STATICFILES_DIRS = [
     # Add more paths if needed
 ]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
@@ -173,3 +177,4 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+django_heroku.settings(locals())
