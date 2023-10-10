@@ -90,7 +90,6 @@ networkx
 nltk
 numexpr
 numpy
-nvidia-pyindex
 openai
 openapi-schema-pydantic
 oscrypto
